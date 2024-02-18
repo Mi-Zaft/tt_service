@@ -1,10 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PhoneNumberTextfield extends StatelessWidget {
-  PhoneNumberTextfield({super.key});
+  PhoneNumberTextfield({super.key, required this.controller, required this.onChanged});
+  final TextEditingController controller;
+  final Function(String) onChanged;
 
   MaskTextInputFormatter maskFormatter = MaskTextInputFormatter(
     mask: '(###) ###-##-##',
@@ -38,6 +38,10 @@ class PhoneNumberTextfield extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: TextField(
+                  onChanged: (value) => {
+                    onChanged(maskFormatter.getUnmaskedText())
+                  },
+                  controller: controller,
                   cursorHeight: 32,
                   style: const TextStyle(
                     fontFamily: 'GT-Eesti-Pro-Display',

@@ -5,5 +5,5 @@ import 'package:tt_service/features/auth/first_screen/view/auth_first_screen.dar
 final routes = {
   '/': (context) => const CheckAuthScreen(),
   '/first-screen': (context) => const AuthFirstScreen(),
-  '/auth-screen': (context) => const AuthScreen()
+  '/auth-screen': (context) => AuthScreen()
 };
