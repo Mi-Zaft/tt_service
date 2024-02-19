@@ -23,5 +23,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+    on<AuthEventEditingPhone>((event, emit) {
+      emit(AuthStateInitial());
+    });
   }
 }

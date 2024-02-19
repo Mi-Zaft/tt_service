@@ -38,25 +38,28 @@ class AuthScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: PhoneNumberTextfield(
-                    onChanged: (unmaskedNumber) =>
-                        {unmaskedPhone = unmaskedNumber},
+                    onChanged: (unmaskedNumber) => {
+                      unmaskedPhone = unmaskedNumber,
+                      _authBloc.add(AuthEventEditingPhone())
+                    },
                     controller: _phoneController,
                   ),
                 ),
-                BlocListener<AuthBloc, AuthState>(
+                BlocBuilder<AuthBloc, AuthState>(
                   bloc: _authBloc,
-                  listener: (context, state) {
+                  builder: (context, state) {
                     if (state is AuthPhoneFail) {
-                      const Padding(
-                        padding: EdgeInsets.only(top: 5),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          'qweqweq',
-                          style: TextStyle(color: Colors.red),
+                          state.errorMessage,
+                          style: const TextStyle(color: Colors.red),
                         ),
                       );
+                    } else {
+                      return SizedBox.fromSize(size: null);
                     }
                   },
-                  child: Container(),
                 ),
                 const Spacer(),
                 const Padding(

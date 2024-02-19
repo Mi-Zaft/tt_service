@@ -7,3 +7,5 @@ class AuthEventSendCode extends AuthEvent {
   final String phone;
   final String unmaskedPhone;
 }
+
+class AuthEventEditingPhone extends AuthEvent {}
