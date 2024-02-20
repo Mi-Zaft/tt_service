@@ -15,16 +15,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         Response response = await ApiService()
             .postData('/api/v1/authorization/send-code', dataToSend);
         if (response.statusCode == 200) {
-          if (response.data['status'] == true) {
-            emit(AuthPhoneSuccess());
-          }
+          emit(AuthPhoneSuccess());
         } else if (response.statusCode != 200) {
           emit(AuthPhoneFail(errorMessage: response.statusMessage ?? 'Ошибка'));
         }
       },
     );
     on<AuthEventEditingPhone>((event, emit) {
-      emit(AuthStateInitial());
+      if (event.phone.length == 10) {
+        emit(AuthStatePhoneWritten());
+      } else {
+        emit(AuthStateInitial());
+      }
     });
   }
 }

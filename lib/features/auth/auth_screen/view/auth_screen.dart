@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tt_service/features/auth/auth_screen.dart/bloc/auth_bloc.dart';
-import 'package:tt_service/features/auth/auth_screen.dart/widgets/auth_phone_number_textfield.dart';
+import 'package:tt_service/features/auth/auth_screen/bloc/auth_bloc.dart';
+import 'package:tt_service/features/auth/auth_screen/widgets/auth_phone_number_textfield.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
@@ -12,8 +12,16 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => _authBloc,
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: _authBloc,
+      listener: (context, state) {
+        if (state is AuthPhoneSuccess) {
+          Navigator.pushNamed(context, '/code-screen', arguments: {
+            'phoneNumber': _phoneController.text,
+            'unMaskedPhoneNumber': unmaskedPhone
+          });
+        }
+      },
       child: Scaffold(
         body: SafeArea(
           child: Center(
@@ -40,7 +48,7 @@ class AuthScreen extends StatelessWidget {
                   child: PhoneNumberTextfield(
                     onChanged: (unmaskedNumber) => {
                       unmaskedPhone = unmaskedNumber,
-                      _authBloc.add(AuthEventEditingPhone())
+                      _authBloc.add(AuthEventEditingPhone(phone: unmaskedPhone))
                     },
                     controller: _phoneController,
                   ),
@@ -124,26 +132,54 @@ class AuthScreen extends StatelessWidget {
                       padding: EdgeInsets.only(left: 24),
                     ),
                     Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
-                          backgroundColor:
-                              const Color.fromRGBO(50, 50, 50, 0.89),
-                          foregroundColor: Colors.white,
-                          elevation: 5.0,
-                        ),
-                        onPressed: () {
-                          _authBloc.add(AuthEventSendCode(
-                              phone: _phoneController.text,
-                              unmaskedPhone: unmaskedPhone));
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text("Получить код"),
-                        ),
-                      ),
-                    ),
+                        child: BlocBuilder<AuthBloc, AuthState>(
+                      bloc: _authBloc,
+                      builder: (context, state) {
+                        if (state is AuthStatePhoneWritten) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: "GT-Eesti-Pro-Display"),
+                              backgroundColor:
+                                  const Color.fromRGBO(97, 160, 69, 1),
+                              foregroundColor: Colors.white,
+                              elevation: 5.0,
+                            ),
+                            onPressed: () {
+                              _authBloc.add(AuthEventSendCode(
+                                  phone: _phoneController.text,
+                                  unmaskedPhone: unmaskedPhone));
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text("Получить код"),
+                            ),
+                          );
+                        } else {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: "GT-Eesti-Pro-Display"),
+                              backgroundColor:
+                                  const Color.fromRGBO(50, 50, 50, 0.89),
+                              foregroundColor: Colors.white,
+                              elevation: 5.0,
+                            ),
+                            onPressed: () {
+                              _authBloc.add(AuthEventSendCode(
+                                  phone: _phoneController.text,
+                                  unmaskedPhone: unmaskedPhone));
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text("Получить код"),
+                            ),
+                          );
+                        }
+                      },
+                    )),
                     const Padding(
                       padding: EdgeInsets.only(right: 24),
                     ),
