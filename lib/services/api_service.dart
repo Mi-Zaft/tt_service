@@ -3,11 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_service/services/app_config.dart';
 
 class ApiService {
+  static ApiService? _instance;
   final Dio _dio = Dio();
   String? _token;
 
-  ApiService() {
+  ApiService._() {
     initializeApiService();
+  }
+
+  factory ApiService() {
+    return _instance ??= ApiService._();
   }
 
   Future<void> initializeApiService() async {
@@ -37,6 +42,28 @@ class ApiService {
       // _token = await getToken();
       // _dio.options.headers['Authorization'] = 'Bearer $_token';
       final response = await _dio.post(endPoint, data: dataToSend);
+      return response;
+    } catch (error) {
+      if (error is DioException) {
+        return Response(
+            requestOptions: RequestOptions(path: endPoint),
+            statusCode: 400,
+            statusMessage:
+                error.response?.data['detail'] ?? 'Неизвестная ошибка');
+      } else {
+        return Response(
+            requestOptions: RequestOptions(path: endPoint),
+            statusCode: 400,
+            statusMessage: 'Error: $error');
+      }
+    }
+  }
+
+  Future<Response> postDataWithoutToken(
+      {required String endPoint, required Object data}) async {
+    try {
+      final response = await _dio.post(endPoint, data: data);
+      print(response);
       return response;
     } catch (error) {
       if (error is DioException) {
