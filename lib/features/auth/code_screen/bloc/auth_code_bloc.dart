@@ -39,16 +39,16 @@ class AuthCodeBloc extends Bloc<AuthCodeEvent, AuthCodeState> {
         };
         Response response = await ApiService().postDataWithoutToken(
             endPoint: '/api/v1/authorization/verify-code', data: dataToSend);
+        print(response);
         if (response.statusCode == 200) {
-          if (response.data.containsKey('data')) {
-            if (response.data['data'].containsKey('token')) {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString('jwt_token', response.data['data']['token']);
-              emit(AuthCodeRequestSuccessState());
-            }
+          if (response.data.containsKey('access_token')) {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            await prefs.setString('access_token', response.data['access_token']);
+            emit(AuthCodeRequestSuccessState());
+          } else {
+            emit(AuthCodeRequestFailState(errorMessage: 'Попробуйте позже'));
           }
-          emit(AuthCodeRequestFailState(errorMessage: 'Попробуйте позже'));
         } else {
           emit(AuthCodeRequestFailState(
               errorMessage: response.statusMessage ?? 'Ошибка'));

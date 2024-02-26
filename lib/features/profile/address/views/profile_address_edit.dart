@@ -1,10 +1,160 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tt_service/features/profile/address/bloc/profile_address_bloc.dart';
+import 'package:tt_service/features/profile/address/widgets/address_comment_textfield.dart';
+import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
 
 class ProfileAddressEdit extends StatelessWidget {
   const ProfileAddressEdit({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final ProfileAddressBloc profileAddressBloc = ProfileAddressBloc();
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController entranceController = TextEditingController();
+    final TextEditingController floorController = TextEditingController();
+    final TextEditingController apartmentController = TextEditingController();
+    final TextEditingController intercomController = TextEditingController();
+    final TextEditingController commentController = TextEditingController();
+
+    return BlocProvider(
+      create: (context) => ProfileAddressBloc(),
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: Center(
+                  child: Image.asset("assets/images/imgLogo2.png"),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10, left: 25, right: 25),
+                child: Text(
+                  "Откуда выкинуть мусор",
+                  style: TextStyle(
+                    fontFamily: 'GT-Eesti-Pro-Display',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: AddressTextfield(
+                  labelText: 'Адрес',
+                  controller: addressController,
+                  onChanged: (value) {
+                    profileAddressBloc
+                        .add(AddressTextFieldChanged(value: value));
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: AddressTextfield(
+                          labelText: 'Подъезд',
+                          controller: entranceController,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: AddressTextfield(
+                          labelText: 'Этаж',
+                          controller: floorController,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: AddressTextfield(
+                          labelText: 'Кв/офис',
+                          controller: apartmentController,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: AddressTextfield(
+                          labelText: 'Домофон',
+                          controller: intercomController,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20, left: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      'Комментарий',
+                      style: TextStyle(
+                        fontFamily: 'GT-Eesti-Pro-Display',
+                        color: Color.fromRGBO(122, 122, 122, 1),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: AddressCommentTextfield(controller: commentController),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
+                          backgroundColor:
+                              const Color.fromRGBO(50, 50, 50, 0.89),
+                          foregroundColor: Colors.white,
+                          elevation: 5.0,
+                        ),
+                        onPressed: () {
+                          print('Address button tapped');
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Text("Сохранить адрес"),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

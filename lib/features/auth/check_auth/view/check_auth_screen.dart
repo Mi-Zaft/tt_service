@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tt_service/features/auth/first_screen/view/auth_first_screen.dart';
 import 'package:tt_service/features/main/choose_bags_count/view/choose_bags_count_screen.dart';
+import 'package:tt_service/features/profile/address/views/profile_address_edit.dart';
 import 'package:tt_service/services/api_service.dart';
 
 class CheckAuthScreen extends StatelessWidget {
@@ -15,7 +16,12 @@ class CheckAuthScreen extends StatelessWidget {
             if (snapshot.hasError || snapshot.data == null) {
               return const AuthFirstScreen();
             } else {
-              return const ChooseBagsCountScreen();
+              
+              if (1 != 1) {
+                return const ChooseBagsCountScreen();
+              } else {
+                return const ProfileAddressEdit();
+              }
             }
           }
           return const AuthFirstScreen();
