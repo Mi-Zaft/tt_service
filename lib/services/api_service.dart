@@ -37,10 +37,32 @@ class ApiService {
     return token;
   }
 
+  Future<Response> fetchData(String endPoint) async {
+    try {
+      _token = await getToken();
+      _dio.options.headers['Authorization'] = 'Bearer $_token';
+      final response = await _dio.get(endPoint);
+      return response;
+    } catch (error) {
+      if (error is DioException) {
+        return Response(
+            requestOptions: RequestOptions(path: endPoint),
+            statusCode: 400,
+            statusMessage:
+                error.response?.data['detail'] ?? 'Неизвестная ошибка');
+      } else {
+        return Response(
+            requestOptions: RequestOptions(path: endPoint),
+            statusCode: 400,
+            statusMessage: 'Error: $error');
+      }
+    }
+  }
+
   Future<Response> postData(String endPoint, Object dataToSend) async {
     try {
-      // _token = await getToken();
-      // _dio.options.headers['Authorization'] = 'Bearer $_token';
+      _token = await getToken();
+      _dio.options.headers['Authorization'] = 'Bearer $_token';
       final response = await _dio.post(endPoint, data: dataToSend);
       return response;
     } catch (error) {
@@ -63,7 +85,6 @@ class ApiService {
       {required String endPoint, required Object data}) async {
     try {
       final response = await _dio.post(endPoint, data: data);
-      print(response);
       return response;
     } catch (error) {
       if (error is DioException) {

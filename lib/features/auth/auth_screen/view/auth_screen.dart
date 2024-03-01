@@ -139,8 +139,9 @@ class AuthScreen extends StatelessWidget {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 textStyle: const TextStyle(
-                                    fontSize: 24,
-                                    fontFamily: "GT-Eesti-Pro-Display"),
+                                  fontSize: 24,
+                                  fontFamily: "GT-Eesti-Pro-Display",
+                                ),
                                 backgroundColor:
                                     const Color.fromRGBO(97, 160, 69, 1),
                                 foregroundColor: Colors.white,

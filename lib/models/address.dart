@@ -1,17 +1,32 @@
 class Address {
-  final String name;
-  final int entrance;
-  final int floor;
-  final int apartment;
-  final String intercom;
-  final String comment;
+  String? id;
+  String? name;
+  int? entrance;
+  int? floor;
+  int? apartment;
+  String? intercom;
+  String? comment;
 
-  Address({
-    required this.name,
-    required this.entrance,
-    required this.floor,
-    required this.apartment,
-    required this.intercom,
-    required this.comment,
-  });
+  // Address({
+  //   this.name,
+  //   this.entrance,
+  //   this.floor,
+  //   this.apartment,
+  //   this.intercom,
+  //   this.comment,
+  // });
+}
+
+class AddressApi {
+  final String address;
+  final String addressId;
+
+  AddressApi({required this.address, required this.addressId});
+
+  factory AddressApi.fromJson(Map<String, dynamic> json) {
+    return AddressApi(
+      address: json['address'],
+      addressId: json['addressId'],
+    );
+  }
 }

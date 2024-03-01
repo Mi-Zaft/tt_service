@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/profile/address/bloc/profile_address_bloc.dart';
 import 'package:tt_service/features/profile/address/widgets/address_comment_textfield.dart';
+import 'package:tt_service/features/profile/address/widgets/address_suggest.dart';
 import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
 
 class ProfileAddressEdit extends StatelessWidget {
@@ -49,10 +50,38 @@ class ProfileAddressEdit extends StatelessWidget {
                   controller: addressController,
                   onChanged: (value) {
                     profileAddressBloc
-                        .add(AddressTextFieldChanged(value: value));
+                        .add(ProfileAddressTextFieldChanged(value: value));
                   },
                 ),
               ),
+              BlocBuilder<ProfileAddressBloc, ProfileAddressState>(
+                  bloc: profileAddressBloc,
+                  builder: (context, state) {
+                    if (state is ProfileAddressListReceived) {
+                      List<Widget> list = [];
+                      for (var i = 0; i < state.listOfAddresses.length; i++) {
+                        list.add(AddressSuggest(
+                          address: state.listOfAddresses[i].address,
+                          addressId: state.listOfAddresses[i].addressId,
+                          onTap: (addressId, address) => {
+                            addressController.text = address,
+                            state.listOfAddresses.clear,
+                            profileAddressBloc.add(
+                              ProfileAddressSomeFieldChanged(
+                                field: Fields.address,
+                                value: addressId,
+                              ),
+                            ),
+                          },
+                        ));
+                      }
+                      return Column(
+                        children: list,
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }),
               const SizedBox(
                 height: 10,
               ),
@@ -66,7 +95,15 @@ class ProfileAddressEdit extends StatelessWidget {
                         child: AddressTextfield(
                           labelText: 'Подъезд',
                           controller: entranceController,
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            profileAddressBloc.add(
+                              ProfileAddressSomeFieldChanged(
+                                field: Fields.entrance,
+                                value: value,
+                              ),
+                            );
+                            print(value);
+                          },
                         ),
                       ),
                     ),
@@ -130,24 +167,50 @@ class ProfileAddressEdit extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
-                          backgroundColor:
-                              const Color.fromRGBO(50, 50, 50, 0.89),
-                          foregroundColor: Colors.white,
-                          elevation: 5.0,
-                        ),
-                        onPressed: () {
-                          print('Address button tapped');
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text("Сохранить адрес"),
-                        ),
-                      ),
-                    ),
+                        child: BlocBuilder<ProfileAddressBloc,
+                            ProfileAddressState>(
+                      bloc: profileAddressBloc,
+                      builder: (context, state) {
+                        if (state is ProfileAddressValidated) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: "GT-Eesti-Pro-Display"),
+                              backgroundColor:
+                                  const Color.fromRGBO(97, 160, 69, 1),
+                              foregroundColor: Colors.white,
+                              elevation: 5.0,
+                            ),
+                            onPressed: () {
+                              profileAddressBloc
+                                  .add(ProfileAddressRequestSave());
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text("Сохранить адрес"),
+                            ),
+                          );
+                        } else {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  fontFamily: "GT-Eesti-Pro-Display"),
+                              backgroundColor:
+                                  const Color.fromRGBO(50, 50, 50, 0.89),
+                              foregroundColor: Colors.white,
+                              elevation: 5.0,
+                            ),
+                            onPressed: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Text("Сохранить адрес"),
+                            ),
+                          );
+                        }
+                      },
+                    )),
                   ],
                 ),
               ),
