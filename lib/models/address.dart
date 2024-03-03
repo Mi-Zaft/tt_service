@@ -6,15 +6,6 @@ class Address {
   int? apartment;
   String? intercom;
   String? comment;
-
-  // Address({
-  //   this.name,
-  //   this.entrance,
-  //   this.floor,
-  //   this.apartment,
-  //   this.intercom,
-  //   this.comment,
-  // });
 }
 
 class AddressApi {

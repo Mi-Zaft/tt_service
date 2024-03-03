@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/auth/code_screen/bloc/auth_code_bloc.dart';
-import 'package:tt_service/features/auth/code_screen/widgets/CodeTextField.dart';
+import 'package:tt_service/features/auth/code_screen/widgets/code_text_field.dart';
 
 class CodeScreen extends StatefulWidget {
   const CodeScreen({Key? key}) : super(key: key);
@@ -55,6 +55,7 @@ class _CodeScreen extends State<CodeScreen> {
     return BlocProvider(
       create: (BuildContext context) => AuthCodeBloc(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocListener<AuthCodeBloc, AuthCodeState>(
           bloc: _authCodeBloc,
           listener: (context, state) => {
@@ -239,7 +240,6 @@ class _CodeScreen extends State<CodeScreen> {
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    print('1');
                     _authCodeBloc.add(
                         LoadingResendCode(unmaskedPhone: unMaskedPhoneNumber));
                   },

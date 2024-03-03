@@ -11,3 +11,11 @@ class ProfileAddressListReceived extends ProfileAddressState {
 }
 
 class ProfileAddressValidated extends ProfileAddressState {}
+
+class ProfileAddressSaved extends ProfileAddressState {}
+
+class ProfileAddressSaveError extends ProfileAddressState {
+  final String errorMessage;
+
+  ProfileAddressSaveError({required this.errorMessage});
+}

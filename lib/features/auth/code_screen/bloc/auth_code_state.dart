@@ -11,13 +11,12 @@ class AuthCodeWrittenState extends AuthCodeState {}
 class AuthCodeRequestSuccessState extends AuthCodeState {}
 
 class AuthCodeRequestFailState extends AuthCodeState {
-  AuthCodeRequestFailState({required this.errorMessage});
-  final String errorMessage;
+  AuthCodeRequestFailState({required errorMessage});
 }
 
 class AuthCodeResendSuccessState extends AuthCodeState {}
 
 class AuthCodeResendFailState extends AuthCodeState {
-  AuthCodeResendFailState({required this.errorMessage});
-  final String errorMessage;
+  AuthCodeResendFailState({required errorMessage});
+  
 }

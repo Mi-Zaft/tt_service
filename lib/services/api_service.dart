@@ -37,6 +37,29 @@ class ApiService {
     return token;
   }
 
+  Future<Map?> getAuth() async {
+    final String? token = await getToken();
+    if (token != null) {
+      try {
+        Response response = await fetchData('/api/v1/user');
+        if (response.statusCode == 200) {
+          return {
+            'address': response.data['address'],
+            'creditCard': response.data['creditCard']
+          };
+        } else {
+          return null;
+        }
+      } catch (e) {
+        // ignore: avoid_print
+        print('Error: $e');
+      }
+    }
+
+    return {'token': token};
+    // return {'token': token as String};
+  }
+
   Future<Response> fetchData(String endPoint) async {
     try {
       _token = await getToken();
@@ -62,6 +85,7 @@ class ApiService {
   Future<Response> postData(String endPoint, Object dataToSend) async {
     try {
       _token = await getToken();
+      _dio.options.headers['x-api-key'] = AppConfig.apiKey;
       _dio.options.headers['Authorization'] = 'Bearer $_token';
       final response = await _dio.post(endPoint, data: dataToSend);
       return response;

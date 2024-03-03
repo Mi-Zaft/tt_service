@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/auth/auth_screen/bloc/auth_bloc.dart';
 import 'package:tt_service/features/auth/auth_screen/widgets/auth_phone_number_textfield.dart';
 
+// ignore: must_be_immutable
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key});
 
@@ -23,6 +24,7 @@ class AuthScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Center(
             child: Column(

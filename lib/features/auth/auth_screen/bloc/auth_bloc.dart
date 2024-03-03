@@ -14,7 +14,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         };
         Response response = await ApiService()
             .postData('/api/v1/authorization/send-code', dataToSend);
-        print(response);
         if (response.statusCode == 200) {
           emit(AuthPhoneSuccess());
         } else if (response.statusCode != 200) {

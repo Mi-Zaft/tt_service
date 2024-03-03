@@ -26,7 +26,6 @@ class ProfileAddressBloc
       emit(ProfileAddressInitial());
     });
     on<ProfileAddressSomeFieldChanged>((event, emit) {
-      print('ProfileAddressTextFieldChanged');
       switch (event.field) {
         case Fields.address:
           finalAddress?.id = event.value;
@@ -45,8 +44,26 @@ class ProfileAddressBloc
         emit(ProfileAddressValidated());
       }
     });
-    on<ProfileAddressRequestSave>((event, emit) {
-      print('save address');
+    on<ProfileAddressRequestSave>((event, emit) async {
+      Map<String, dynamic> dataToSend = {
+        'id': finalAddress?.id,
+        'name': finalAddress?.name,
+        'entrance': finalAddress?.entrance,
+        'floor': finalAddress?.floor,
+        'apartment': finalAddress?.apartment,
+        'intercom': finalAddress?.intercom
+      };
+      Response response =
+          await ApiService().postData('/api/v1/address/add', dataToSend);
+      if (response.statusCode == 200) {
+        emit(ProfileAddressSaved());
+      } else {
+        emit(
+          ProfileAddressSaveError(
+            errorMessage: response.statusMessage ?? '',
+          ),
+        );
+      }
     });
   }
 }

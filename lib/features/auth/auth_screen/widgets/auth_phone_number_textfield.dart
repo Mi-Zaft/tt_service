@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+// ignore: must_be_immutable
 class PhoneNumberTextfield extends StatelessWidget {
   PhoneNumberTextfield({super.key, required this.controller, required this.onChanged});
   final TextEditingController controller;
