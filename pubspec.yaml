@@ -33,6 +33,10 @@ flutter:
     - assets/images/imgLogo.png
     - assets/images/imgLogo2.png
     - assets/images/iconpoint.png
+    - assets/images/iconBag1.png
+    - assets/images/iconBag2.png
+    - assets/images/iconBag3.png
+    - assets/images/iconBag4.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

@@ -21,7 +21,8 @@ class CheckAuthScreen extends StatelessWidget {
                 return const ProfileAddressEdit();
               }
               if (snapshot.data?['creditCard'] == null) {
-                return const ProfileCreditCardEdit();
+                // return const ProfileCreditCardEdit();
+                return const ChooseBagsCountScreen();
               }
               return const ChooseBagsCountScreen();
             }

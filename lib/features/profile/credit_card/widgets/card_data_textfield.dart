@@ -5,16 +5,19 @@ class CardDataTextfield extends StatelessWidget {
   final String labelText;
   final MaskTextInputFormatter maskFormatter;
   final TextEditingController controller;
+  final Function(String) onChanged;
   const CardDataTextfield({
     super.key,
     required this.labelText,
     required this.maskFormatter,
-    required this.controller
+    required this.controller,
+    required this.onChanged
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       controller: controller,
       inputFormatters: [maskFormatter],
       cursorColor: Colors.black,

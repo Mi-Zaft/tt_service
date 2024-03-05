@@ -30,128 +30,158 @@ class ProfileCreditCardEdit extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => ProfileCreditCardBloc(),
-      child: Scaffold(
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24),
-          child: Row(
-            children: [
-              Expanded(
-                child:
-                    BlocBuilder<ProfileCreditCardBloc, ProfileCreditCardState>(
-                  bloc: profileCreditCardBloc,
-                  builder: (context, state) {
-                    if (state is ProfileCreditCardValidated) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
-                          backgroundColor: const Color.fromRGBO(97, 160, 69, 1),
-                          foregroundColor: Colors.white,
-                          elevation: 5.0,
-                        ),
-                        onPressed: () {
-                          // profile.add(ProfileAddressRequestSave());
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text("Сохранить карту"),
-                        ),
-                      );
-                    } else {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
-                          backgroundColor:
-                              const Color.fromRGBO(50, 50, 50, 0.89),
-                          foregroundColor: Colors.white,
-                          elevation: 5.0,
-                        ),
-                        onPressed: () {},
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Text("Сохранить карту"),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                child: Center(
-                  child: Image.asset("assets/images/imgLogo2.png"),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10, left: 25, right: 25),
-                child: Text(
-                  "Добавить карту",
-                  style: TextStyle(
-                    fontFamily: 'GT-Eesti-Pro-Display',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w300,
+      child: BlocListener<ProfileCreditCardBloc, ProfileCreditCardState>(
+        bloc: profileCreditCardBloc,
+        listener: (context, state) {
+          if (state is ProfileCreditCardSaved) {
+            Navigator.pushNamedAndRemoveUntil(context, '/bags-count-screen', (route) => false);
+          }
+        },
+        child: Scaffold(
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24),
+            child: Row(
+              children: [
+                Expanded(
+                  child: BlocBuilder<ProfileCreditCardBloc,
+                      ProfileCreditCardState>(
+                    bloc: profileCreditCardBloc,
+                    builder: (context, state) {
+                      if (state is ProfileCreditCardValidated) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                                fontSize: 24,
+                                fontFamily: "GT-Eesti-Pro-Display"),
+                            backgroundColor:
+                                const Color.fromRGBO(97, 160, 69, 1),
+                            foregroundColor: Colors.white,
+                            elevation: 5.0,
+                          ),
+                          onPressed: () {
+                            profileCreditCardBloc.add(ProfileCreditCardSaveRequest());
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Text("Сохранить карту"),
+                          ),
+                        );
+                      } else {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                                fontSize: 24,
+                                fontFamily: "GT-Eesti-Pro-Display"),
+                            backgroundColor:
+                                const Color.fromRGBO(50, 50, 50, 0.89),
+                            foregroundColor: Colors.white,
+                            elevation: 5.0,
+                          ),
+                          onPressed: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Text("Сохранить карту"),
+                          ),
+                        );
+                      }
+                    },
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(210, 239, 210, 1),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+              ],
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50),
+                  child: Center(
+                    child: Image.asset("assets/images/imgLogo2.png"),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10, left: 25, right: 25),
+                  child: Text(
+                    "Добавить карту",
+                    style: TextStyle(
+                      fontFamily: 'GT-Eesti-Pro-Display',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(210, 239, 210, 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: CardDataTextfield(
+                            labelText: 'Номер карты',
+                            maskFormatter: cardMaskFormatter,
+                            controller: cardNumberController,
+                            onChanged: (value) => {
+                              profileCreditCardBloc.add(
+                                ProfileCreditCardChangeEvent(
+                                    field: Fields.number, value: cardMaskFormatter.getUnmaskedText()),
+                              )
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CardDataTextfield(
+                                  labelText: 'Срок действия',
+                                  maskFormatter: dateMaskFormatter,
+                                  controller: cardDateController,
+                                  onChanged: (value) => {
+                                    profileCreditCardBloc.add(
+                                      ProfileCreditCardChangeEvent(
+                                          field: Fields.date, value: value),
+                                    )
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: CardDataTextfield(
+                                  labelText: 'CVV',
+                                  maskFormatter: cvvMaskFormatter,
+                                  controller: cardCvvController,
+                                  onChanged: (value) => {
+                                    profileCreditCardBloc.add(
+                                      ProfileCreditCardChangeEvent(
+                                          field: Fields.cvv, value: value),
+                                    )
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 30)
+                      ],
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: CardDataTextfield(
-                          labelText: 'Номер карты',
-                          maskFormatter: cardMaskFormatter,
-                          controller: cardNumberController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CardDataTextfield(
-                                labelText: 'Срок действия',
-                                maskFormatter: dateMaskFormatter,
-                                controller: cardDateController,
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: CardDataTextfield(
-                                labelText: 'CVV',
-                                maskFormatter: cvvMaskFormatter,
-                                controller: cardCvvController,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 30)
-                    ],
-                  ),
                 ),
-              ),
-              const Spacer()
-            ],
+                const Spacer()
+              ],
+            ),
           ),
         ),
       ),
