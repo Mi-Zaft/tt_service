@@ -54,6 +54,8 @@ class ApiService {
         // ignore: avoid_print
         print('Error: $e');
       }
+    } else {
+      throw Exception("Unknown token");
     }
 
     return {'token': token};

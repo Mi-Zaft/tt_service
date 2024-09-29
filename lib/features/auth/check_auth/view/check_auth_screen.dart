@@ -17,12 +17,13 @@ class CheckAuthScreen extends StatelessWidget {
             if (snapshot.hasError || snapshot.data == null) {
               return const AuthFirstScreen();
             } else {
-              if (snapshot.data?['address']['addressId'] == null) {
+              print(snapshot);
+              if (snapshot.data?['address'] == null || snapshot.data?['address']['addressId'] == null) {
                 return const ProfileAddressEdit();
               }
               if (snapshot.data?['creditCard'] == null) {
-                // return const ProfileCreditCardEdit();
-                return const ChooseBagsCountScreen();
+                return const ProfileCreditCardEdit();
+                // return const ChooseBagsCountScreen();
               }
               return const ChooseBagsCountScreen();
             }

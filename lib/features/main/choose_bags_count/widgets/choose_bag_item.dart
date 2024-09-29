@@ -40,7 +40,8 @@ class ChooseBagItem extends StatelessWidget {
                 builder: (context) {
                   if (type == Types.free) {
                     return const ChooseBagFreeButton();
-                  } else if (type == Types.one) {
+                  } else 
+                  if (type == Types.one) {
                     return const ChooseBagOneButton();
                   } else if (type == Types.two) {
                     return const ChooseBagTwoButton();
