@@ -8,7 +8,7 @@ import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_tw
 
 enum Types { free, one, two, three, four, more }
 
-//comment
+
 class ChooseBagItem extends StatelessWidget {
   final Types type;
   final Function onTap;
