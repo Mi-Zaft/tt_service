@@ -16,8 +16,8 @@ class AddressApi {
 
   factory AddressApi.fromJson(Map<String, dynamic> json) {
     return AddressApi(
-      address: json['address'],
-      addressId: json['addressId'],
+      address: json['name'],
+      addressId: json['id'],
     );
   }
 }

@@ -67,6 +67,7 @@ class ApiService {
       _token = await getToken();
       _dio.options.headers['Authorization'] = 'Bearer $_token';
       final response = await _dio.get(endPoint);
+      print(response);
       return response;
     } catch (error) {
       if (error is DioException) {
