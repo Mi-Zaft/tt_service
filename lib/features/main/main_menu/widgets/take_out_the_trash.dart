@@ -5,38 +5,70 @@ class TakeOutTheTrash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment(0.8, -0.8),
-              child: Text(
-                'Вынос мусора',
-                style: TextStyle(
-                    fontFamily: 'GT-Eesti-Pro-Display',
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: AspectRatio(
+        aspectRatio: 16 / 6, // Пропорции контейнера (ширина/высота)
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Stack(
+            children: [
+              // Изображение слева
+              Align(
+                alignment: Alignment(-1, -0),
+                child: FractionallySizedBox(
+                  widthFactor: 0.8, // Ширина 60% от контейнера
+                  heightFactor: 0.9, // Высота 80% от контейнера
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/imgTakeOut.png"),
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              // Заголовок
+              Align(
+                alignment: Alignment(0.7, -0.8),
+                child: Text(
+                  'Вынос мусора',
+                  style: TextStyle(
+                    color: Color(0xFF596D5C),
                     fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(26, 125, 42, 100)),
-              ),
-            ),
-            Align(
-              alignment: Alignment(0.8, 0.8),
-              child: Text(
-                'от 120₽',
-                style: TextStyle(
                     fontFamily: 'GT-Eesti-Pro-Display',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromRGBO(26, 125, 42, 100)),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Image.asset('assets/images/imgTakeOut.png'),
-            )
-          ],
+              // Цена
+              Align(
+                alignment: Alignment(0.9, 0.9),
+                child: Text(
+                  'от 130₽',
+                  style: TextStyle(
+                    color: Color(0xFF1A7D2A),
+                    fontSize: 20,
+                    fontFamily: 'GT-Eesti-Pro-Display',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

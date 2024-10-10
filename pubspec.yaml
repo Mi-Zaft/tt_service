@@ -38,6 +38,8 @@ flutter:
     - assets/images/iconBag3.png
     - assets/images/iconBag4.png
     - assets/images/imgTakeOut.png
+    - assets/images/iconHistoryOrders.png
+    - assets/images/iconMyProfile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

@@ -171,6 +171,8 @@ class AuthScreen extends StatelessWidget {
                                 elevation: 5.0,
                               ),
                               onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/main-menu-screen', (route) => false);
                                 _authBloc.add(AuthEventSendCode(
                                     phone: _phoneController.text,
                                     unmaskedPhone: unmaskedPhone));

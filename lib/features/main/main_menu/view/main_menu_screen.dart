@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tt_service/features/main/main_menu/widgets/my_profile.dart';
+import 'package:tt_service/features/main/main_menu/widgets/order_history.dart';
 import 'package:tt_service/features/main/main_menu/widgets/take_out_the_trash.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -18,7 +20,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       body: Center(
         child: Column(
           children: [
-            TakeOutTheTrash()
+            TakeOutTheTrash(),
+            OrderHistory(),
+            MyProfile()
           ],
         ),
       )
