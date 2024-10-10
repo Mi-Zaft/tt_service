@@ -65,7 +65,10 @@ class ProfileAddressEdit extends StatelessWidget {
                             foregroundColor: Colors.white,
                             elevation: 5.0,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/bags-count-screen', (route) => false);
+                          },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
                             child: Text("Сохранить адрес"),

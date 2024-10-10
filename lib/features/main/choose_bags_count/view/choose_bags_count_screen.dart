@@ -23,7 +23,10 @@ class _ChooseBagsCountScreen extends State<ChooseBagsCountScreen> {
         ),
         actions: [
           RawMaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/main-menu-screen', (route) => false);
+            },
             elevation: 2.0,
             fillColor: Colors.white,
             padding: const EdgeInsets.all(15.0),

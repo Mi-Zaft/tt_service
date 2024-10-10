@@ -17,10 +17,10 @@ class ProfileAddressBloc
       Response response = await ApiService()
           .fetchData('/api/v1/address/all?address_request=${event.value}');
       List<AddressApi> listOfAddresses = [];
-      for (var i = 0; i < response.data.length; i++) {
-        listOfAddresses.add(AddressApi.fromJson(response.data[i]));
-      }
-      emit(ProfileAddressListReceived(listOfAddresses: listOfAddresses));
+       for (var i = 0; i < response.data.length; i++) {
+         listOfAddresses.add(AddressApi.fromJson(response.data[i]));
+       }
+       emit(ProfileAddressListReceived(listOfAddresses: listOfAddresses));
     });
     on<ProfileAddressEvent>((event, emit) {
       emit(ProfileAddressInitial());

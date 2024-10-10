@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:tt_service/features/main/main_menu/widgets/take_out_the_trash.dart';
+
+class MainMenuScreen extends StatefulWidget {
+  const MainMenuScreen({Key? key}) : super(key: key);
+
+  @override
+  _MainMenuScreenState createState() => _MainMenuScreenState();
+}
+
+class _MainMenuScreenState extends State<MainMenuScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            TakeOutTheTrash()
+          ],
+        ),
+      )
+    );
+  }
+}
