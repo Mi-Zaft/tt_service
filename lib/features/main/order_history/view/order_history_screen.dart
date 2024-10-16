@@ -12,15 +12,21 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(),
         centerTitle: true,
-        title: Text(
-          'История заказов',
-          style: TextStyle(
-            color: Color(0xFF1A7D2A),
-            fontSize: 20,
-            fontFamily: 'GT-Eesti-Pro-Display',
-            fontWeight: FontWeight.w500,
-          ),
+        flexibleSpace: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'История заказов',
+              style: TextStyle(
+                color: Color(0xFF1A7D2A),
+                fontSize: 20,
+                fontFamily: 'GT-Eesti-Pro-Display',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
       ),
     );

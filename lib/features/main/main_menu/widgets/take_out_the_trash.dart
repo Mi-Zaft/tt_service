@@ -13,7 +13,7 @@ class TakeOutTheTrash extends StatelessWidget {
               context, '/bags-count-screen', (route) => false);
         },
         child: AspectRatio(
-          aspectRatio: 16 / 6, // Пропорции контейнера (ширина/высота)
+          aspectRatio: 16 / 7, // Пропорции контейнера (ширина/высота)
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
