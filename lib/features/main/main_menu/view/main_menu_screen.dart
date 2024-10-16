@@ -15,7 +15,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
       ),
       body: Center(
         child: Column(
