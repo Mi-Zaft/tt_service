@@ -57,7 +57,7 @@ class ApiService {
     } else {
       throw Exception("Unknown token");
     }
-
+    print(token);
     return {'token': token};
     // return {'token': token as String};
   }
