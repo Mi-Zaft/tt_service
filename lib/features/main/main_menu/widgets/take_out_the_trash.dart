@@ -10,7 +10,7 @@ class TakeOutTheTrash extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/bags-count-screen', (route) => false);
+              context, '/address-edit-screen', (route) => false);
         },
         child: AspectRatio(
           aspectRatio: 16 / 7, // Пропорции контейнера (ширина/высота)

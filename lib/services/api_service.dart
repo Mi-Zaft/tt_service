@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tt_service/services/app_config.dart';
 
@@ -66,6 +67,7 @@ class ApiService {
     try {
       _token = await getToken();
       _dio.options.headers['Authorization'] = 'Bearer $_token';
+      _dio.options.headers['x-api-key'] = AppConfig.apiKey;
       final response = await _dio.get(endPoint);
       print(response);
       return response;
@@ -127,6 +129,39 @@ class ApiService {
             statusMessage: 'Error: $error');
       }
     }
+  }
+  Future<Map?> getPrices(
+  {required int oneBag, required int twoBag,
+    required int threeBag, required int fourBag,
+    required int addMoreBag}) async {
+
+    final String? token = await getToken();
+    if (token != null) {
+      try {
+        _token = token;
+        _dio.options.headers['x-api-key'] = AppConfig.apiKey;
+        _dio.options.headers['Authorization'] = 'Bearer $_token';
+        Response response = await fetchData('/api/v1/order/price-list');
+        if (response.statusCode == 200) {
+          return {
+            oneBag: response.data['one_bag_cost'],
+            twoBag: response.data['two_bag_cost'],
+            threeBag: response.data['three_bag_cost'],
+            fourBag: response.data['four_bag_cost'],
+            addMoreBag: response.data['additional_bag_cost'],
+          };
+        } else {
+          return null;
+        }
+      } catch (e) {
+        // ignore: avoid_print
+        print('Error: $e');
+      }
+    } else {
+      throw Exception("Unknown token");
+    }
+    return {'token': token};
+    // return {'token': token as String};
   }
 }
 
