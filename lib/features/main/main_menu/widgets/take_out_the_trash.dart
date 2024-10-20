@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class TakeOutTheTrash extends StatelessWidget {
   const TakeOutTheTrash({Key? key}) : super(key: key);
 
@@ -10,7 +11,7 @@ class TakeOutTheTrash extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/address-edit-screen', (route) => false);
+              context, '/bags-count-screen', (route) => false);
         },
         child: AspectRatio(
           aspectRatio: 16 / 7, // Пропорции контейнера (ширина/высота)

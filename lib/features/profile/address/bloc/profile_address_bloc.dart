@@ -56,6 +56,7 @@ class ProfileAddressBloc
       Response response =
           await ApiService().postData('/api/v1/address/add', dataToSend);
       if (response.statusCode == 200) {
+        print('Address saved');
         emit(ProfileAddressSaved());
       } else {
         emit(

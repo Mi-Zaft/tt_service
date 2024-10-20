@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 class ChooseBagMoreButton extends StatelessWidget {
-  const ChooseBagMoreButton({super.key});
+  final double price;
+  const ChooseBagMoreButton({super.key, required this.price});
 
   @override
   Widget build(BuildContext context) {

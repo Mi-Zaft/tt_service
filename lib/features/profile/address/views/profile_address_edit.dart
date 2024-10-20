@@ -4,9 +4,11 @@ import 'package:tt_service/features/profile/address/bloc/profile_address_bloc.da
 import 'package:tt_service/features/profile/address/widgets/address_comment_textfield.dart';
 import 'package:tt_service/features/profile/address/widgets/address_suggest.dart';
 import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
+import 'package:tt_service/features/main/get_prices/get_prices.dart';
 
 class ProfileAddressEdit extends StatelessWidget {
   const ProfileAddressEdit({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,7 @@ class ProfileAddressEdit extends StatelessWidget {
                             elevation: 5.0,
                           ),
                           onPressed: () {
+                            fetchBagPrices(forceRefresh: false);
                             Navigator.pushNamedAndRemoveUntil(
                                 context, '/bags-count-screen', (route) => false);
                           },
@@ -231,7 +234,7 @@ class ProfileAddressEdit extends StatelessWidget {
                       ),
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 10),
+                        const EdgeInsets.only(left: 20, right: 20, top: 10),
                         child: AddressCommentTextfield(
                             controller: commentController),
                       ),

@@ -1,124 +1,175 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_how_it_work_button.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_item.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_more_sheet.dart';
+import 'package:tt_service/models/prices.dart';
+import 'package:tt_service/features/main/choose_bags_count/bloc/bag_prices_bloc.dart';
 
-class ChooseBagsCountScreen extends StatefulWidget {
+class ChooseBagsCountScreen extends StatelessWidget {
   const ChooseBagsCountScreen({super.key});
 
   @override
-  State<ChooseBagsCountScreen> createState() => _ChooseBagsCountScreen();
-}
-
-class _ChooseBagsCountScreen extends State<ChooseBagsCountScreen> {
-  double _bagsQuantity = 4;
-  final FocusNode _focusNode = FocusNode();
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          "assets/images/imgLogo2.png",
-          width: MediaQuery.of(context).size.width / 3,
-        ),
-        actions: [
-          RawMaterialButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/main-menu-screen', (route) => false);
-            },
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(15.0),
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.menu,
-              size: 20.0,
-              color: Color.fromRGBO(97, 160, 69, 1),
-            ),
+    return BlocProvider(
+      create: (context) => BagPricesBloc()..add(LoadBagPricesEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Image.asset(
+            "assets/images/imgLogo2.png",
+            width: MediaQuery.of(context).size.width / 3,
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ChooseBagItem(
-                    type: Types.free,
-                    onTap: () {
-                      print('free');
-                    },
-                  ),
-                  ChooseBagItem(
-                    type: Types.one,
-                    onTap: () {
-                      _bagsQuantity = 1;
-                      print('one');
-                    },
-                  ),
-                  ChooseBagItem(
-                    type: Types.two,
-                    onTap: () {
-                      _bagsQuantity = 2;
-                      print('two');
-                    },
-                  ),
-                  ChooseBagItem(
-                    type: Types.three,
-                    onTap: () {
-                      _bagsQuantity = 3;
-                      print('three');
-                    },
-                  ),
-                  ChooseBagItem(
-                    type: Types.four,
-                    onTap: () {
-                      _bagsQuantity = 4;
-                      print('four');
-                    },
-                  ),
-                  ChooseBagItem(
-                    type: Types.more,
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return ChooseBagMoreSheet(
-                            onChanged: (newValue) {
-                              _bagsQuantity = newValue;
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const ChooseBagHowItWorkButton();
-                        },
-                      );
-                    },
-                    child: const Text(
-                      'Как это работает?',
-                      style: TextStyle(
-                          color: Color.fromRGBO(97, 160, 69, 1),
-                          fontFamily: 'GT-Eesti-Pro-Display',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ],
+          actions: [
+            RawMaterialButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/main-menu-screen', (route) => false);
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              padding: const EdgeInsets.all(15.0),
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.menu,
+                size: 20.0,
+                color: Color.fromRGBO(97, 160, 69, 1),
               ),
             ),
           ],
         ),
+        body: BlocBuilder<BagPricesBloc, BagPricesState>(
+          builder: (context, state) {
+            if (state is BagPricesLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is BagPricesLoaded) {
+              final bagPrices = state.bagPrices;
+              return ChooseBagsContent(bagPrices: bagPrices);
+            } else if (state is BagPricesError) {
+              return Center(
+                child: Text(state.message),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ChooseBagsContent extends StatefulWidget {
+  final BagPrices bagPrices;
+
+  const ChooseBagsContent({super.key, required this.bagPrices});
+
+  @override
+  State<ChooseBagsContent> createState() => _ChooseBagsContentState();
+}
+
+class _ChooseBagsContentState extends State<ChooseBagsContent> {
+  double _bagsQuantity = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    final bagPrices = widget.bagPrices;
+
+    return SafeArea(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ChooseBagItem(
+                  price: 0,
+                  type: Types.free,
+                  onTap: () {
+                    print('free');
+                  },
+                ),
+                ChooseBagItem(
+                  price: bagPrices.oneBagCost,
+                  type: Types.one,
+                  onTap: () {
+                    setState(() {
+                      _bagsQuantity = 1;
+                    });
+                    print('one');
+                  },
+                ),
+                ChooseBagItem(
+                  price: bagPrices.twoBagCost,
+                  type: Types.two,
+                  onTap: () {
+                    setState(() {
+                      _bagsQuantity = 2;
+                    });
+                    print('two');
+                  },
+                ),
+                ChooseBagItem(
+                  price: bagPrices.threeBagCost,
+                  type: Types.three,
+                  onTap: () {
+                    setState(() {
+                      _bagsQuantity = 3;
+                    });
+                    print('three');
+                  },
+                ),
+                ChooseBagItem(
+                  price: bagPrices.fourBagCost,
+                  type: Types.four,
+                  onTap: () {
+                    setState(() {
+                      _bagsQuantity = 4;
+                    });
+                    print('four');
+                  },
+                ),
+                ChooseBagItem(
+                  price: bagPrices.additionalBagCost,
+                  type: Types.more,
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ChooseBagMoreSheet(
+                          onChanged: (newValue) {
+                            setState(() {
+                              _bagsQuantity = newValue;
+                            });
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return const ChooseBagHowItWorkButton();
+                      },
+                    );
+                  },
+                  child: const Text(
+                    'Как это работает?',
+                    style: TextStyle(
+                      color: Color.fromRGBO(97, 160, 69, 1),
+                      fontFamily: 'GT-Eesti-Pro-Display',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

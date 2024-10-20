@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ChooseBagFourButton extends StatelessWidget {
-  const ChooseBagFourButton({super.key});
+  final double price;
+  const ChooseBagFourButton({super.key, required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,8 @@ class ChooseBagFourButton extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            '2 мешка - 180Р',
+          Text(
+            '4 мешка - ${price.toStringAsFixed(0)}Р',
             style: TextStyle(
               color: Color.fromRGBO(80, 80, 80, 1),
               fontFamily: 'GT-Eesti-Pro-Display',

@@ -11,7 +11,14 @@ enum Types { free, one, two, three, four, more }
 class ChooseBagItem extends StatelessWidget {
   final Types type;
   final Function onTap;
-  const ChooseBagItem({super.key, required this.type, required this.onTap});
+  final double price;
+
+  const ChooseBagItem({
+    super.key,
+    required this.price,
+    required this.type,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +47,16 @@ class ChooseBagItem extends StatelessWidget {
                 builder: (context) {
                   if (type == Types.free) {
                     return const ChooseBagFreeButton();
-                  } else 
-                  if (type == Types.one) {
-                    return const ChooseBagOneButton();
+                  } else if (type == Types.one) {
+                    return ChooseBagOneButton(price: price);
                   } else if (type == Types.two) {
-                    return const ChooseBagTwoButton();
+                    return ChooseBagTwoButton(price: price);
                   } else if (type == Types.three) {
-                    return const ChooseBagThreeButton();
+                    return ChooseBagThreeButton(price: price);
                   } else if (type == Types.four) {
-                    return const ChooseBagFourButton();
+                    return ChooseBagFourButton(price: price);
                   } else {
-                    return const ChooseBagMoreButton();
+                    return ChooseBagMoreButton(price: price);
                   }
                 },
               ),
