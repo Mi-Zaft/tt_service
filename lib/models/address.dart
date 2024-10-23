@@ -1,6 +1,5 @@
 class Address {
   String? id;
-  String? name;
   int? entrance;
   int? floor;
   int? apartment;

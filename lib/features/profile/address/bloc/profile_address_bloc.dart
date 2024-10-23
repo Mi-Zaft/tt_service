@@ -47,18 +47,20 @@ class ProfileAddressBloc
     on<ProfileAddressRequestSave>((event, emit) async {
       Map<String, dynamic> dataToSend = {
         'id': finalAddress?.id,
-        'name': finalAddress?.name,
         'entrance': finalAddress?.entrance,
         'floor': finalAddress?.floor,
         'apartment': finalAddress?.apartment,
-        'intercom': finalAddress?.intercom
+        'intercom': finalAddress?.intercom,
+        'comment': finalAddress?.comment,
       };
+      print(dataToSend);
       Response response =
           await ApiService().postData('/api/v1/address/add', dataToSend);
       if (response.statusCode == 200) {
         print('Address saved');
         emit(ProfileAddressSaved());
       } else {
+        print(dataToSend);
         emit(
           ProfileAddressSaveError(
             errorMessage: response.statusMessage ?? '',

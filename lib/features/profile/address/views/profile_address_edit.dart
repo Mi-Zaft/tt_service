@@ -26,7 +26,7 @@ class ProfileAddressEdit extends StatelessWidget {
         bloc: profileAddressBloc,
         listener: (context, state) => {
           if (state is ProfileAddressSaved)
-            {Navigator.pushNamed(context, '/edit-credit-card')}
+            {Navigator.pushNamed(context, '/bags-count-screen')}
         },
         child: Scaffold(
           floatingActionButton: Padding(

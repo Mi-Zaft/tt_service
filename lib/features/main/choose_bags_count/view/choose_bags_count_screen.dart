@@ -97,20 +97,22 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                       _bagsQuantity = 1;
                     });
                     print('one');
+                    print('Цена за два мешка: ${bagPrices?.oneBagCost}');
                   },
                 ),
                 ChooseBagItem(
-                  price: bagPrices.twoBagCost,
+                  price: bagPrices.twoBagsCost,
                   type: Types.two,
                   onTap: () {
                     setState(() {
                       _bagsQuantity = 2;
                     });
                     print('two');
+                    print('Цена за два мешка: ${bagPrices?.twoBagsCost}');
                   },
                 ),
                 ChooseBagItem(
-                  price: bagPrices.threeBagCost,
+                  price: bagPrices.threeBagsCost,
                   type: Types.three,
                   onTap: () {
                     setState(() {
@@ -120,7 +122,7 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                   },
                 ),
                 ChooseBagItem(
-                  price: bagPrices.fourBagCost,
+                  price: bagPrices.fourBagsCost,
                   type: Types.four,
                   onTap: () {
                     setState(() {
