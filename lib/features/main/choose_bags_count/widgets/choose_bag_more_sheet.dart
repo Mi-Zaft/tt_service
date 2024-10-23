@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 
 class ChooseBagMoreSheet extends StatefulWidget {
   final Function(double) onChanged;
-  const ChooseBagMoreSheet({super.key, required this.onChanged});
+  final double fourBagsPrice;
+  final double additionalBagPrice;
+
+  const ChooseBagMoreSheet({
+    super.key,
+    required this.onChanged,
+    required this.fourBagsPrice,
+    required this.additionalBagPrice,
+  });
 
   @override
   State<ChooseBagMoreSheet> createState() => _ChooseBagMoreSheetState();
 }
 
 class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
-  double _bagsQuantity = 4;
+  double _bagsQuantity = 5; // Начальное значение слайдера
+
   @override
   Widget build(BuildContext context) {
+    // Рассчитываем количество дополнительных мешков
+    int extraBags = _bagsQuantity.toInt() - 4;
+    // Рассчитываем итоговую стоимость
+    double totalPrice = widget.fourBagsPrice + widget.additionalBagPrice * extraBags;
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -43,9 +57,9 @@ class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
             ),
             child: Slider(
               value: _bagsQuantity,
-              divisions: 7,
-              min: 1,
-              max: 7,
+              divisions: 5,
+              min: 5,
+              max: 10,
               label: _bagsQuantity.round().toString(),
               onChanged: (double newValue) {
                 setState(() {
@@ -55,11 +69,11 @@ class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
               },
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 12, bottom: 25),
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 25),
             child: Text(
-              'Цена: 350₽',
-              style: TextStyle(
+              'Цена: ${totalPrice.toStringAsFixed(0)}₽',
+              style: const TextStyle(
                 fontFamily: 'GT-Eesti-Pro-Display',
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
@@ -75,7 +89,9 @@ class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(0, 60),
                     textStyle: const TextStyle(
-                        fontSize: 24, fontFamily: "GT-Eesti-Pro-Display"),
+                      fontSize: 24,
+                      fontFamily: "GT-Eesti-Pro-Display",
+                    ),
                     backgroundColor: const Color.fromRGBO(97, 160, 69, 1),
                     foregroundColor: Colors.white,
                     elevation: 5.0,

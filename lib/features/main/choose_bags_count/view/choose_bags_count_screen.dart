@@ -131,24 +131,26 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                     print('four');
                   },
                 ),
-                ChooseBagItem(
-                  price: bagPrices.additionalBagCost,
-                  type: Types.more,
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return ChooseBagMoreSheet(
-                          onChanged: (newValue) {
-                            setState(() {
-                              _bagsQuantity = newValue;
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
+              ChooseBagItem(
+                price: bagPrices!.additionalBagCost,
+                type: Types.more,
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ChooseBagMoreSheet(
+                        onChanged: (newValue) {
+                          setState(() {
+                            _bagsQuantity = newValue;
+                          });
+                        },
+                        fourBagsPrice: bagPrices!.fourBagsCost,
+                        additionalBagPrice: bagPrices!.additionalBagCost,
+                      );
+                    },
+                  );
+                },
+              ),
                 TextButton(
                   onPressed: () {
                     showModalBottomSheet(
