@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_service/features/profile/address/bloc/profile_address_bloc.dart';
 
 class AddressField extends StatefulWidget {
   const AddressField({Key? key}) : super(key: key);
@@ -8,6 +9,8 @@ class AddressField extends StatefulWidget {
 }
 
 class _AddressFieldState extends State<AddressField> {
+  final String? address = ProfileAddressBloc.getAddress;
+  final dynamic apartment = ProfileAddressBloc.getApartment;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -32,7 +35,7 @@ class _AddressFieldState extends State<AddressField> {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                Text(' Ул. Петрушкина 90 кв 90',
+                Text('${address}, кв. ${apartment}',
                   style: TextStyle(
                     color: Color(0xFF000000),
                     fontSize: 18,

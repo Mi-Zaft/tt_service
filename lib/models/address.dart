@@ -1,10 +1,23 @@
 class Address {
   String? id;
-  int? entrance;
-  int? floor;
-  int? apartment;
+  String? name;
+  String? entrance;
+  String? floor;
+  String? apartment;
   String? intercom;
   String? comment;
+
+  Future<Map<String, dynamic>> toJson() async {
+    return {
+      "id": this.id,
+      "name": this.name,
+      "entrance": this.entrance,
+      "floor": this.floor,
+      "apartment": this.apartment,
+      "intercom": this.intercom,
+      "comment": this.comment,
+    };
+  }
 }
 
 class AddressApi {
@@ -20,3 +33,5 @@ class AddressApi {
     );
   }
 }
+
+

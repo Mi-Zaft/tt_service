@@ -5,6 +5,7 @@ import 'package:tt_service/features/profile/address/widgets/address_comment_text
 import 'package:tt_service/features/profile/address/widgets/address_suggest.dart';
 import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
 import 'package:tt_service/features/main/get_prices/get_prices.dart';
+import 'package:tt_service/models/address.dart';
 
 class ProfileAddressEdit extends StatelessWidget {
   const ProfileAddressEdit({super.key});
@@ -141,7 +142,7 @@ class ProfileAddressEdit extends StatelessWidget {
                                     profileAddressBloc.add(
                                       ProfileAddressSomeFieldChanged(
                                         field: Fields.address,
-                                        value: addressId,
+                                        value: AddressApi(addressId: addressId, address: address),
                                       ),
                                     ),
                                   },
@@ -186,7 +187,14 @@ class ProfileAddressEdit extends StatelessWidget {
                                 child: AddressTextfield(
                                   labelText: 'Этаж',
                                   controller: floorController,
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    profileAddressBloc.add(
+                                      ProfileAddressSomeFieldChanged(
+                                        field: Fields.floor,
+                                        value: value,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -197,7 +205,14 @@ class ProfileAddressEdit extends StatelessWidget {
                                 child: AddressTextfield(
                                   labelText: 'Кв/офис',
                                   controller: apartmentController,
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    profileAddressBloc.add(
+                                      ProfileAddressSomeFieldChanged(
+                                        field: Fields.apartment,
+                                        value: value,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -208,7 +223,14 @@ class ProfileAddressEdit extends StatelessWidget {
                                 child: AddressTextfield(
                                   labelText: 'Домофон',
                                   controller: intercomController,
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    profileAddressBloc.add(
+                                      ProfileAddressSomeFieldChanged(
+                                        field: Fields.intercom,
+                                        value: value,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -236,7 +258,16 @@ class ProfileAddressEdit extends StatelessWidget {
                         padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 10),
                         child: AddressCommentTextfield(
-                            controller: commentController),
+                          controller: commentController,
+                          onChanged: (value) {
+                            profileAddressBloc.add(
+                              ProfileAddressSomeFieldChanged(
+                                field: Fields.comment,
+                                value: value,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       // const Spacer(),
                     ],

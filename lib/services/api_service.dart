@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tt_service/models/address.dart';
 import 'package:tt_service/services/app_config.dart';
 import 'package:tt_service/models/prices.dart';
 
@@ -7,6 +8,7 @@ class ApiService {
   static ApiService? _instance;
   final Dio _dio = Dio();
   String? _token;
+
 
   ApiService._() {
     initializeApiService();
@@ -26,6 +28,16 @@ class ApiService {
     _dio.interceptors.addAll([
       ErrorInterceptor(),
     ]);
+    _dio.interceptors.add(LogInterceptor(
+      request: true,
+      requestBody: true,
+      responseHeader: false,
+      responseBody: true,
+      error: true,
+      logPrint: (obj) {
+        print(obj);
+      },
+    ));
 
     _token = await getToken();
     _dio.options.headers['Authorization'] = 'Bearer $_token';
@@ -93,6 +105,7 @@ class ApiService {
       _dio.options.headers['x-api-key'] = AppConfig.apiKey;
       _dio.options.headers['Authorization'] = 'Bearer $_token';
       final response = await _dio.post(endPoint, data: dataToSend);
+      print(response);
       return response;
     } catch (error) {
       if (error is DioException) {
@@ -151,7 +164,6 @@ class ApiService {
       return null;
     }
   }
-
 }
 
 class ErrorInterceptor extends Interceptor {

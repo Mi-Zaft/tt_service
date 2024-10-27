@@ -17,6 +17,7 @@ dependencies:
   mask_text_input_formatter: ^2.7.0
   shared_preferences: ^2.2.2
   equatable: ^2.0.0
+  devtools_extensions: ^0.2.2
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +42,12 @@ flutter:
     - assets/images/imgTakeOut.png
     - assets/images/iconHistoryOrders.png
     - assets/images/iconMyProfile.png
+    - assets/images/iconBag.png
+    - assets/images/iconComm.png
+    - assets/images/iconGeo.png
+    - assets/images/iconPhone.png
+    - assets/images/iconSpinner.png
+    - assets/images/Unavailable.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware

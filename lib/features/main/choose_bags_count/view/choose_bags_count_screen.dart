@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_how_it_work_button.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_item.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_more_sheet.dart';
+import 'package:tt_service/models/address.dart';
 import 'package:tt_service/models/prices.dart';
 import 'package:tt_service/features/main/choose_bags_count/bloc/bag_prices_bloc.dart';
+import 'package:tt_service/models/user.dart';
+
 
 class ChooseBagsCountScreen extends StatelessWidget {
+
   const ChooseBagsCountScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,7 @@ class ChooseBagsCountScreen extends StatelessWidget {
       create: (context) => BagPricesBloc()..add(LoadBagPricesEvent()),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Image.asset(
             "assets/images/imgLogo2.png",
             width: MediaQuery.of(context).size.width / 3,

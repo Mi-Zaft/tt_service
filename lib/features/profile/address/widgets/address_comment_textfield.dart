@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class AddressCommentTextfield extends StatelessWidget {
   final TextEditingController controller;
-  const AddressCommentTextfield({super.key, required this.controller});
+  final Function(String) onChanged;
+  const AddressCommentTextfield({super.key, required this.controller, required this.onChanged,});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,9 @@ class AddressCommentTextfield extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
+          onChanged: (value) => {
+            onChanged(value)
+          },
           controller: controller,
           maxLines: 2,
           maxLength: 100,

@@ -6,12 +6,14 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  static dynamic getPhoneNumber;
   AuthBloc() : super(AuthStateInitial()) {
     on<AuthEventSendCode>(
       (event, emit) async {
         Map<String, dynamic> dataToSend = {
           'phone': '+7${event.unmaskedPhone}',
-        };
+        };;
+        getPhoneNumber = '+7${event.unmaskedPhone}';
         Response response = await ApiService()
             .postData('/api/v1/authorization/send-code', dataToSend);
         if (response.statusCode == 200) {
