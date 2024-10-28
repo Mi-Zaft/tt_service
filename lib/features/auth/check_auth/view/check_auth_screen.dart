@@ -29,7 +29,6 @@ class CheckAuthScreen extends StatelessWidget {
               }
               if (snapshot.data?['address'] != null) {
                 globalPhoneNumber = snapshot.data?['phone'];
-                print(globalPhoneNumber);
                 return FutureBuilder(
                   future: ApiService().fetchData('api/v1/address'),
                   builder: (context, userSnapshot) {
@@ -45,8 +44,11 @@ class CheckAuthScreen extends StatelessWidget {
 
                         UserData userData = UserData.fromJson(data);
 
-                        Provider.of<UserDataProvider>(context, listen: false)
-                            .setUserData(userData);
+                        // Отложить вызов setUserData до следующего кадра
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Provider.of<UserDataProvider>(context, listen: false)
+                              .setUserData(userData);
+                        });
 
                         print(userData);
 

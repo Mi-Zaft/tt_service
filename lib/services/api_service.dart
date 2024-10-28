@@ -127,7 +127,9 @@ class ApiService {
   Future<Response> postDataWithoutToken(
       {required String endPoint, required Object data}) async {
     try {
+
       final response = await _dio.post(endPoint, data: data);
+
       return response;
     } catch (error) {
       if (error is DioException) {
