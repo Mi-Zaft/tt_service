@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.2.2
   equatable: ^2.0.0
   devtools_extensions: ^0.2.2
+  provider: any
 
 dev_dependencies:
   flutter_test:

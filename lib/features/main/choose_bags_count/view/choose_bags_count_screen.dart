@@ -13,7 +13,6 @@ class ChooseBagsCountScreen extends StatelessWidget {
 
   const ChooseBagsCountScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

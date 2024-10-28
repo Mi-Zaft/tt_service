@@ -9,6 +9,7 @@ class MyProfile extends StatelessWidget {
       padding: EdgeInsets.all(24.0,),
       child: InkWell(
         onTap: () {
+
           Navigator.pushNamedAndRemoveUntil(
               context, '/my-profile-screen', (route) => false);
         },

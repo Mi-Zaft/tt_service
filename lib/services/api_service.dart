@@ -58,7 +58,8 @@ class ApiService {
         if (response.statusCode == 200) {
           return {
             'address': response.data['address'],
-            'creditCard': response.data['creditCard']
+            'creditCard': response.data['creditCard'],
+            'phone': response.data['phone']
           };
         } else {
           return null;

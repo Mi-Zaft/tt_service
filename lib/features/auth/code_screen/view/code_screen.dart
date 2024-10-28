@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tt_service/features/auth/check_auth/view/check_auth_screen.dart';
 import 'package:tt_service/features/auth/code_screen/bloc/auth_code_bloc.dart';
 import 'package:tt_service/features/auth/code_screen/widgets/code_text_field.dart';
 
@@ -60,7 +61,7 @@ class _CodeScreen extends State<CodeScreen> {
           bloc: _authCodeBloc,
           listener: (context, state) => {
             if (state is AuthCodeRequestSuccessState)
-              {
+              { globalPhoneNumber = unMaskedPhoneNumber,
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/address-edit-screen', (route) => false)
               } else if (state is AuthCodeRequestFailState) {

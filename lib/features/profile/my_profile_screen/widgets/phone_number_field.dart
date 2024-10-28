@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tt_service/features/auth/auth_screen/bloc/auth_bloc.dart';
+import 'package:tt_service/features/auth/check_auth/view/check_auth_screen.dart';
+
 
 class PhoneNumber extends StatelessWidget {
   const PhoneNumber({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dynamic phoneNumber = AuthBloc.getPhoneNumber;
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -20,7 +21,7 @@ class PhoneNumber extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
           ),
-          Text(phoneNumber,
+          Text('$globalPhoneNumber',
             style: TextStyle(
               color: Color(0xFF000000),
               fontSize: 18,
