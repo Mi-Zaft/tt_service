@@ -70,7 +70,9 @@ class QuitButtonSheet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(35, 16, 35, 8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+
+              },
               child: AspectRatio(
                 aspectRatio: 19 / 3,
                 child: Container(

@@ -3,12 +3,15 @@ import 'package:tt_service/models/order.dart';
 import 'package:tt_service/services/api_service.dart';
 import 'package:tt_service/features/main/order_history/view/order_details_history_screen.dart';
 
+
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({Key? key}) : super(key: key);
 
   @override
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
+
+
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   late Future<List<Order>> _ordersFuture;
@@ -41,14 +44,58 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   // Метод для форматирования даты
   String formatTimestamp(int timestamp) {
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return '${date.day}.${date.month}.${date.year} ${date.hour}:${date.minute}';
+    String monthName;
+
+    switch (date.month) {
+      case 1:
+        monthName = 'Января';
+        break;
+      case 2:
+        monthName = 'Февраля';
+        break;
+      case 3:
+        monthName = 'Марта';
+        break;
+      case 4:
+        monthName = 'Апреля';
+        break;
+      case 5:
+        monthName = 'Мая';
+        break;
+      case 6:
+        monthName = 'Июня';
+        break;
+      case 7:
+        monthName = 'Июля';
+        break;
+      case 8:
+        monthName = 'Августа';
+        break;
+      case 9:
+        monthName = 'Сентября';
+        break;
+      case 10:
+        monthName = 'Октября';
+        break;
+      case 11:
+        monthName = 'Ноября';
+        break;
+      case 12:
+        monthName = 'Декабря';
+        break;
+      default:
+        monthName = '${date.month}'; // На случай непредвиденных значений
+    }
+
+    return '${date.day} $monthName ${date.year}г. ${date.hour}:${date.minute}';
   }
+
 
   // Метод для определения цвета кнопки по статусу
   Color getStatusColor(String status) {
     switch (status) {
       case 'CREATED':
-        return Colors.lightGreen;
+        return Color(0xFFBAE7BA);
       case 'IN_PROGRESS':
         return Colors.orange;
       case 'COMPLETED':
@@ -110,21 +157,39 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 String formattedDate = formatTimestamp(order.createdAt);
                 Color buttonColor = getStatusColor(order.status);
 
+
+
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: buttonColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    ),
-                    onPressed: () => showOrderDetails(order),
-                    child: Text(
-                      formattedDate,
-                      style: const TextStyle(
-                        color: Color.fromRGBO(80, 80, 80, 1),
-                        fontFamily: 'GT-Eesti-Pro-Display',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                  padding: const EdgeInsets.fromLTRB(35, 16, 35, 8),
+                  child: InkWell(
+                    onTap: () {
+                      showOrderDetails(order);
+                    },
+                    child: AspectRatio(
+                      aspectRatio: 19 / 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: buttonColor,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 15,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                            child: Text(formattedDate,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF505050),
+                                fontSize: 20,
+                                fontFamily: 'GT-Eesti-Pro-Display',
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
+                        ),
                       ),
                     ),
                   ),
