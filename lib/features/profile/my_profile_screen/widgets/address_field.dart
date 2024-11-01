@@ -50,10 +50,10 @@ class _AddressFieldState extends State<AddressField> {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(16.0), // Добавил отступы для улучшения UI
+        padding: EdgeInsets.fromLTRB(0, 16, 0, 16), // Добавил отступы для улучшения UI
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Проверяем, есть ли адрес и квартира
             if (address.isNotEmpty && apartment.isNotEmpty)
