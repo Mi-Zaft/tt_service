@@ -124,6 +124,30 @@ class ApiService {
     }
   }
 
+  Future<Response> deleteAddress() async {
+    try {
+      _token = await getToken();
+      _dio.options.headers['x-api-key'] = AppConfig.apiKey;
+      _dio.options.headers['Authorization'] = 'Bearer $_token';
+
+      // Выполняем DELETE-запрос
+      Response response = await _dio.delete('/api/v1/address');
+
+      return response;
+    } on DioException catch (e) {
+      // Обработка ошибок
+      if (e.response != null) {
+        // Сервер вернул ошибку
+        print('Ошибка сервера: ${e.response?.statusCode} - ${e.response?.statusMessage}');
+        throw Exception('Ошибка сервера: ${e.response?.data}');
+      } else {
+        // Ошибка подключения или другая ошибка
+        print('Ошибка подключения: ${e.message}');
+        throw Exception('Ошибка подключения: ${e.message}');
+      }
+    }
+  }
+
   Future<Response> postDataWithoutToken(
       {required String endPoint, required Object data}) async {
     try {

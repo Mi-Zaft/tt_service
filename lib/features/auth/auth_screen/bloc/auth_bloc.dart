@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         };;
         getPhoneNumber = '+7${event.unmaskedPhone}';
         Response response = await ApiService()
-            .postData('/api/v1/authorization/send-code', dataToSend);
+            .postDataWithoutToken(endPoint: '/api/v1/authorization/send-code', data: dataToSend);
         if (response.statusCode == 200) {
           emit(AuthPhoneSuccess());
         } else if (response.statusCode != 200) {
