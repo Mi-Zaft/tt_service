@@ -49,6 +49,7 @@ class ProfileAddressBloc extends Bloc<ProfileAddressEvent, ProfileAddressState> 
             if (event.value is AddressApi) {
               finalAddress?.id = event.value.addressId;
               getAddress = event.value.address;
+              finalAddress?.name = event.value.address;
               print(event.value.addressId);
               print(event.value.address);
             }
