@@ -19,6 +19,7 @@ dependencies:
   equatable: ^2.0.0
   devtools_extensions: ^0.2.2
   provider: any
+  timestamp_to_string: any
 
 dev_dependencies:
   flutter_test:

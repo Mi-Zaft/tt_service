@@ -7,7 +7,6 @@ class ProfileAddressTextFieldChanged extends ProfileAddressEvent {
 
   ProfileAddressTextFieldChanged({required this.value});
 }
-
 class ProfileAddressSomeFieldChanged extends ProfileAddressEvent {
   final Fields field;
   final dynamic value;

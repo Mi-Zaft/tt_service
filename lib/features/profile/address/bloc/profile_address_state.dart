@@ -10,6 +10,13 @@ class ProfileAddressListReceived extends ProfileAddressState {
   ProfileAddressListReceived({required this.listOfAddresses});
 }
 
+class ProfileAddressLoading extends ProfileAddressState {}
+
+class ProfileAddressError extends ProfileAddressState {
+  final String message;
+
+  ProfileAddressError({required this.message});
+}
 class ProfileAddressValidated extends ProfileAddressState {}
 
 class ProfileAddressSaved extends ProfileAddressState {}

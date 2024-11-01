@@ -30,7 +30,7 @@ class _AddressFieldState extends State<AddressField> {
     getAddress = ProfileAddressBloc.getAddress;
     getApartment = ProfileAddressBloc.getApartment;
 
-    if (getAddress == null || getAddress!.isEmpty) {
+    if (getAddress == null || getAddress!.isEmpty || getApartment == null || getApartment!.isEmpty) {
       address = widget.addressName ?? '';
       apartment = widget.apartmentName ?? '';
     } else {

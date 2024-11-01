@@ -2,36 +2,108 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tt_service/features/profile/address/bloc/profile_address_bloc.dart';
 import 'package:tt_service/features/profile/address/widgets/address_comment_textfield.dart';
-import 'package:tt_service/features/profile/address/widgets/address_suggest.dart';
 import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
 import 'package:tt_service/features/main/get_prices/get_prices.dart';
+import 'package:tt_service/features/profile/my_profile_screen/widgets/phone_number_field.dart';
 import 'package:tt_service/models/address.dart';
+import 'package:tt_service/models/user_data_provider.dart';
+import 'package:tt_service/models/user_data.dart';
+import 'package:provider/provider.dart';
+import 'package:tt_service/features/profile/address/widgets/address_bottom_sheet.dart';
 
-class ProfileAddressEdit extends StatelessWidget {
-  const ProfileAddressEdit({super.key});
+import '../widgets/address_textfield_digits.dart';
 
+class ProfileAddressEdit extends StatefulWidget {
+  const ProfileAddressEdit({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final ProfileAddressBloc profileAddressBloc = ProfileAddressBloc();
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController entranceController = TextEditingController();
-    final TextEditingController floorController = TextEditingController();
-    final TextEditingController apartmentController = TextEditingController();
-    final TextEditingController intercomController = TextEditingController();
-    final TextEditingController commentController = TextEditingController();
+  _ProfileAddressEditState createState() => _ProfileAddressEditState();
 
+}
+class _ProfileAddressEditState extends State<ProfileAddressEdit> {
+  late ProfileAddressBloc profileAddressBloc;
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController entranceController = TextEditingController();
+  final TextEditingController floorController = TextEditingController();
+  final TextEditingController apartmentController = TextEditingController();
+  final TextEditingController intercomController = TextEditingController();
+  final TextEditingController commentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    profileAddressBloc = ProfileAddressBloc();
+  }
+
+  @override
+  void dispose() {
+    profileAddressBloc.close();
+    addressController.dispose();
+    entranceController.dispose();
+    floorController.dispose();
+    apartmentController.dispose();
+    intercomController.dispose();
+    commentController.dispose();
+    super.dispose();
+  }
+  void _openAddressBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Позволяет `BottomSheet` занимать весь экран
+      builder: (context) {
+        return AddressBottomSheet(
+          profileAddressBloc: profileAddressBloc,
+          onAddressSelected: (AddressApi selectedAddress) {
+            // Устанавливаем выбранный адрес в контроллер
+            setState(() {
+              addressController.text = selectedAddress.address;
+            });
+            // Обновляем Bloc выбранным адресом
+            profileAddressBloc.add(
+              ProfileAddressSomeFieldChanged(
+                field: Fields.address,
+                value: selectedAddress,
+              ),
+            );
+            Navigator.pop(context); // Закрываем BottomSheet
+          },
+        );
+      },
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileAddressBloc(),
-      child: BlocListener(
-        bloc: profileAddressBloc,
-        listener: (context, state) => {
-          if (state is ProfileAddressSaved)
-            {Navigator.pushNamed(context, '/bags-count-screen')}
+      create: (context) => profileAddressBloc,
+      child: BlocListener<ProfileAddressBloc, ProfileAddressState>(
+        listener: (context, state) {
+          if (state is ProfileAddressSaved) {
+            // Получаем экземпляр ProfileAddressBloc
+            final profileAddressBloc = BlocProvider.of<ProfileAddressBloc>(context);
+
+            // Создаём экземпляр UserData на основе finalAddress
+            UserData userData = UserData(
+              id: profileAddressBloc.finalAddress?.id.toString() ?? '',
+              name: profileAddressBloc.finalAddress?.name ?? '',
+              entrance: profileAddressBloc.finalAddress?.entrance ?? '',
+              floor: profileAddressBloc.finalAddress?.floor ?? '',
+              apartment: profileAddressBloc.finalAddress?.apartment ?? '',
+              comment: profileAddressBloc.finalAddress?.comment ?? '',
+              intercom: profileAddressBloc.finalAddress?.intercom ?? '',
+            );
+
+            // Устанавливаем userData в UserDataProvider
+            final userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+            userDataProvider.setUserData(userData);
+            print('Проверка на Null UserData в BlocListener = ${userData.name}');
+
+            // Навигация на следующий экран
+            Navigator.pushNamed(context, '/bags-count-screen');
+          }
         },
         child: Scaffold(
           floatingActionButton: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24),
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
             child: Row(
               children: [
                 Expanded(
@@ -68,10 +140,13 @@ class ProfileAddressEdit extends StatelessWidget {
                             foregroundColor: Colors.white,
                             elevation: 5.0,
                           ),
-                          onPressed: () {
-                            fetchBagPrices(forceRefresh: false);
+                          onPressed: () async {
+                            await fetchBagPrices(forceRefresh: false);
                             Navigator.pushNamedAndRemoveUntil(
-                                context, '/bags-count-screen', (route) => false);
+                              context,
+                              '/bags-count-screen',
+                                  (route) => false,
+                            );
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
@@ -116,47 +191,19 @@ class ProfileAddressEdit extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: AddressTextfield(
-                          labelText: 'Адрес',
-                          controller: addressController,
-                          onChanged: (value) {
-                            profileAddressBloc.add(
-                                ProfileAddressTextFieldChanged(value: value));
-                          },
+                        child: GestureDetector(
+                          onTap: _openAddressBottomSheet,
+                          child: AbsorbPointer(
+                            child: AddressTextfield(
+                              keyboardType: TextInputType.text,
+                              labelText: 'Адрес',
+                              controller: addressController,
+                              onChanged: (value) {
+                                // Ввод обрабатывается в BottomSheet
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                      BlocBuilder<ProfileAddressBloc, ProfileAddressState>(
-                          bloc: profileAddressBloc,
-                          builder: (context, state) {
-                            if (state is ProfileAddressListReceived) {
-                              List<Widget> list = [];
-                              for (var i = 0;
-                                  i < state.listOfAddresses.length;
-                                  i++) {
-                                list.add(AddressSuggest(
-                                  address: state.listOfAddresses[i].address,
-                                  addressId: state.listOfAddresses[i].addressId,
-                                  onTap: (addressId, address) => {
-                                    addressController.text = address,
-                                    state.listOfAddresses.clear,
-                                    profileAddressBloc.add(
-                                      ProfileAddressSomeFieldChanged(
-                                        field: Fields.address,
-                                        value: AddressApi(addressId: addressId, address: address),
-                                      ),
-                                    ),
-                                  },
-                                ));
-                              }
-                              return Column(
-                                children: list,
-                              );
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }),
-                      const SizedBox(
-                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -166,7 +213,7 @@ class ProfileAddressEdit extends StatelessWidget {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
-                                child: AddressTextfield(
+                                child: AddressTextfieldDigits(
                                   labelText: 'Подъезд',
                                   controller: entranceController,
                                   onChanged: (value) {
@@ -184,7 +231,7 @@ class ProfileAddressEdit extends StatelessWidget {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
-                                child: AddressTextfield(
+                                child: AddressTextfieldDigits(
                                   labelText: 'Этаж',
                                   controller: floorController,
                                   onChanged: (value) {
@@ -202,7 +249,7 @@ class ProfileAddressEdit extends StatelessWidget {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
-                                child: AddressTextfield(
+                                child: AddressTextfieldDigits(
                                   labelText: 'Кв/офис',
                                   controller: apartmentController,
                                   onChanged: (value) {
@@ -220,7 +267,7 @@ class ProfileAddressEdit extends StatelessWidget {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
-                                child: AddressTextfield(
+                                child: AddressTextfieldDigits(
                                   labelText: 'Домофон',
                                   controller: intercomController,
                                   onChanged: (value) {

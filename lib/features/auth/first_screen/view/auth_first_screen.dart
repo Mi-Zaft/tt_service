@@ -7,6 +7,10 @@ class AuthFirstScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+      ),
       body: Center(
         child: Column(
           children: [
@@ -20,7 +24,7 @@ class AuthFirstScreen extends StatelessWidget {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 50),
+              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
               child: Row(
                 children: [
                   Expanded(

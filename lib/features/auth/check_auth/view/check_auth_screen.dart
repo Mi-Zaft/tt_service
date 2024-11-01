@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tt_service/features/auth/first_screen/view/auth_first_screen.dart';
 import 'package:tt_service/features/main/choose_bags_count/view/choose_bags_count_screen.dart';
 import 'package:tt_service/features/profile/address/views/profile_address_edit.dart';
@@ -44,14 +45,18 @@ class CheckAuthScreen extends StatelessWidget {
 
                         UserData userData = UserData.fromJson(data);
 
-                        // Отложить вызов setUserData до следующего кадра
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                        // Откладываем установку userData до следующего кадра
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
                           Provider.of<UserDataProvider>(context, listen: false)
                               .setUserData(userData);
+
+                          print(userData);
+                          print('Проверка на Null');
+                          if (userData == null)
+                          print(userData.name);
                         });
 
-                        print(userData);
-
+                        // Возвращаем ваш экран
                         return const ChooseBagsCountScreen();
                       } else {
                         return Center(child: Text('Ошибка: ${response.statusMessage}'));

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AddressTextfield extends StatelessWidget {
+class AddressTextfieldDigits extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
   final Function(String) onChanged;
-  final TextInputType keyboardType;
-  
-  const AddressTextfield({
+
+  const AddressTextfieldDigits({
     super.key,
     required this.labelText,
     required this.controller,
     required this.onChanged,
-    required this.keyboardType,
   });
 
   @override
@@ -20,6 +18,7 @@ class AddressTextfield extends StatelessWidget {
       onChanged: (value) => {
         onChanged(value)
       },
+      keyboardType: TextInputType.phone,
       controller: controller,
       cursorColor: Colors.black,
       style: const TextStyle(

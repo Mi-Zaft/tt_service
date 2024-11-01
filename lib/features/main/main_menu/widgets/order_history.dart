@@ -10,7 +10,7 @@ class OrderHistory extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/address-edit-screen', (route) => false);
+              context, '/order-history-screen', (route) => false);
         },
         child: AspectRatio(
           aspectRatio: 16 / 4,

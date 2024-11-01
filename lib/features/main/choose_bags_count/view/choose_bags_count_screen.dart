@@ -4,12 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_how_it_work_button.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_item.dart';
 import 'package:tt_service/features/main/choose_bags_count/widgets/choose_bag_more_sheet.dart';
-import 'package:tt_service/features/main/choose_bags_count/widgets/create_order.dart';
-import 'package:tt_service/models/address.dart';
+import 'package:tt_service/features/main/order/view/create_order.dart';
+
 import 'package:tt_service/models/prices.dart';
 import 'package:tt_service/features/main/choose_bags_count/bloc/bag_prices_bloc.dart';
-import 'package:tt_service/models/user.dart';
+
 import 'package:tt_service/models/user_data_provider.dart';
+
 
 
 class ChooseBagsCountScreen extends StatelessWidget {
@@ -85,8 +86,15 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
     final bagPrices = widget.bagPrices;
     final userData = userDataProvider.userData!;
 
+    if (userData == null) {
+      // Отображаем индикатор загрузки или сообщение
+        return Center(child: CircularProgressIndicator());
+    }
 
-    return SafeArea(
+    print('Проверка UserData внутри CBCS = ${userData.name}');
+
+
+    return Container(
       child: Column(
         children: [
           const SizedBox(height: 20),
