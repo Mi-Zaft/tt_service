@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_service/features/profile/my_profile_screen/widgets/quit_button_sheet.dart';
 
 class QuitButton extends StatefulWidget {
   const QuitButton({Key? key}) : super(key: key);
@@ -12,8 +13,13 @@ class _QuitButtonState extends State<QuitButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/order-history-screen', (route) => false);
+        showModalBottomSheet(
+            context: context,
+            builder: (context)
+            {
+              return QuitButtonSheet();
+            }
+        );
       },
       child: AspectRatio(
         aspectRatio: 16 / 3,
