@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tt_service/services/api_service.dart';
 import 'package:tt_service/models/order.dart';
@@ -38,6 +39,7 @@ class _CreateOrderState extends State<CreateOrder> {
   Widget build(BuildContext context) {
     int countedBags = widget.bagsQuantity;
     int countedFreeBags = widget.freeBags;
+    String formattedTextBag;
 
     Map<String, dynamic> data = {
       'quantity': countedBags,
@@ -46,6 +48,13 @@ class _CreateOrderState extends State<CreateOrder> {
 
     // Сохраняем родительский контекст
     final parentContext = Navigator.of(context).context;
+
+    if (countedBags == 1) {
+      formattedTextBag = 'мешок';
+    } else if (countedBags >= 5) {
+      formattedTextBag = 'мешков';
+    } else
+      formattedTextBag = 'мешка';
 
     return Container(
       decoration: const BoxDecoration(
@@ -97,7 +106,7 @@ class _CreateOrderState extends State<CreateOrder> {
                     Image.asset('assets/images/iconBag.png'),
                     const SizedBox(width: 10),
                     Text(
-                      '${widget.bagsQuantity} мешков - ${widget.price.toStringAsFixed(0)}₽',
+                      '${widget.bagsQuantity} $formattedTextBag - ${widget.price.toStringAsFixed(0)}₽',
                       style: const TextStyle(
                         fontFamily: 'GT-Eesti-Pro-Display',
                         fontSize: 20,
@@ -126,19 +135,24 @@ class _CreateOrderState extends State<CreateOrder> {
                     try {
                       // Отправляем POST-запрос для создания заказа
                       await ApiService().postData('api/v1/order', data);
+                      print(data);
 
                       // Получаем список заказов
                       var response = await ApiService().fetchData('api/v1/order');
+                      print(response);
 
                       // Предполагается, что response.data - это List<dynamic>
                       List<dynamic> dataList = response.data;
+                      print(response.data);
 
                       // Преобразуем список в объекты Order
                       List<Order> orders = dataList
                           .map((json) => Order.fromJson(json))
                           .toList();
+                      print(orders);
 
                       if (orders.isNotEmpty) {
+                        print('Is Not Empty');
                         // Сортируем заказы по дате создания (от новых к старым)
                         orders.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
@@ -148,21 +162,25 @@ class _CreateOrderState extends State<CreateOrder> {
                         // Преобразуем дату
                         final String formattedDate = formatTimestamp(latestOrder.createdAt);
 
-                        // Закрываем текущую модалку
-                        Navigator.of(context).pop();
 
                         // Используем родительский контекст для открытия новой модалки
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           showModalBottomSheet(
                             context: parentContext,
                             builder: (context) {
+                              print(latestOrder.address.runtimeType);
+                              print(latestOrder.apartment.runtimeType);
+                              print(latestOrder.quantity.runtimeType);
+                              print(latestOrder.price.runtimeType);
+                              print(latestOrder.status.runtimeType);
+                              print(latestOrder.createdAt.runtimeType);
                               return OrderDetailsScreen(
-                                addressName: widget.name,
-                                apartmentName: widget.apartment,
-                                quantity: latestOrder.quantity,
-                                price: latestOrder.price,
-                                status: latestOrder.status,
-                                createdAt: formattedDate,
+                                addressName: latestOrder.address.toString(),
+                                apartmentName: latestOrder.apartment.toString(),
+                                quantity: latestOrder.quantity.toInt(),
+                                price: latestOrder.price.toInt(),
+                                status: latestOrder.status.toString(),
+                                createdAt: formattedDate.toString(),
                               );
                             },
                           );
@@ -179,9 +197,12 @@ class _CreateOrderState extends State<CreateOrder> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Ошибка: $e')),
                       );
-                    } finally {
+                    }
+
+                    finally {
                       setState(() {
                         isLoading = false;
+                        Navigator.of(context).pop();
                       });
                     }
                   },

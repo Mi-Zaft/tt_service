@@ -27,8 +27,8 @@ class Order {
       quantity: (json['quantity'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       status: json['status'] ?? '',
-      comment: json['comment'],
-      courierId: json['courier_id'],
+      comment: json['comment'] ?? '',
+      courierId: json['courier_id'] ?? '',
       userId: json['user_id'] ?? '',
       address: json['address'] ?? '',
       apartment: json['apartment'] ?? ''
