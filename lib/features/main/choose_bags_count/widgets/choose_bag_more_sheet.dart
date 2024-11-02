@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:tt_service/features/main/order/view/create_order.dart';
 
 class ChooseBagMoreSheet extends StatefulWidget {
   final Function(double) onChanged;
-  final double fourBagsPrice;
-  final double additionalBagPrice;
+  final freeBags;
+  final name;
+  final apartment;
+  final bagsQuantity;
+  final price;
+  final int fourBagsPrice;
+  final int additionalBagPrice;
 
   const ChooseBagMoreSheet({
     super.key,
+    required this.name,
+    required this.freeBags,
+    required this.apartment,
+    required this.price,
+    required this.bagsQuantity,
     required this.onChanged,
     required this.fourBagsPrice,
     required this.additionalBagPrice,
@@ -17,14 +28,14 @@ class ChooseBagMoreSheet extends StatefulWidget {
 }
 
 class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
-  double _bagsQuantity = 5; // Начальное значение слайдера
+  int _bagsQuantity = 5; // Начальное значение слайдера
 
   @override
   Widget build(BuildContext context) {
     // Рассчитываем количество дополнительных мешков
-    int extraBags = _bagsQuantity.toInt() - 4;
+    int extraBags = _bagsQuantity - 4;
     // Рассчитываем итоговую стоимость
-    double totalPrice = widget.fourBagsPrice + widget.additionalBagPrice * extraBags;
+    int totalPrice = widget.fourBagsPrice + widget.additionalBagPrice * extraBags;
 
     return Container(
       decoration: const BoxDecoration(
@@ -56,14 +67,14 @@ class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
               valueIndicatorColor: Color.fromRGBO(97, 160, 69, 1),
             ),
             child: Slider(
-              value: _bagsQuantity,
+              value: _bagsQuantity.toDouble(),
               divisions: 5,
               min: 5,
               max: 10,
               label: _bagsQuantity.round().toString(),
               onChanged: (double newValue) {
                 setState(() {
-                  _bagsQuantity = newValue;
+                  _bagsQuantity = newValue.toInt();
                   widget.onChanged(newValue);
                 });
               },
@@ -85,7 +96,21 @@ class _ChooseBagMoreSheetState extends State<ChooseBagMoreSheet> {
               const SizedBox(width: 24),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return CreateOrder(
+                            name: widget.name,
+                            apartment: widget.apartment,
+                            bagsQuantity: _bagsQuantity.toInt(),
+                            price: totalPrice,
+                            freeBags: widget.freeBags,
+                          );
+                    }
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(0, 60),
                     textStyle: const TextStyle(

@@ -115,9 +115,21 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                   onTap: () {
                     setState(() {
                       _bagsQuantity = 1;
-                    });
-                    print('one');
-                    print('Цена за два мешка: ${bagPrices?.oneBagCost}');
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return CreateOrder(
+                              name: userData.name,
+                              apartment: userData.apartment,
+                              bagsQuantity: _bagsQuantity.toInt(),
+                              price: bagPrices.oneBagCost.toInt(),
+                              freeBags: freeBags,
+                            );
+                          }
+                      );
+                    }
+                    );
+                    print('four');
                   },
                 ),
                 ChooseBagItem(
@@ -126,20 +138,45 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                   onTap: () {
                     setState(() {
                       _bagsQuantity = 2;
-                    });
-                    print('two');
-                    print('Цена за два мешка: ${bagPrices?.twoBagsCost}');
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return CreateOrder(
+                              name: userData.name,
+                              apartment: userData.apartment,
+                              bagsQuantity: _bagsQuantity.toInt(),
+                              price: bagPrices.twoBagsCost.toInt(),
+                              freeBags: freeBags,
+                            );
+                          }
+                      );
+                    }
+                    );
+                    print('four');
                   },
                 ),
                 ChooseBagItem(
                   price: bagPrices.threeBagsCost,
                   type: Types.three,
-                  onTap: () {
-                    setState(() {
-                      _bagsQuantity = 3;
-                    });
-                    print('three');
-                  },
+                    onTap: () {
+                      setState(() {
+                        _bagsQuantity = 3;
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return CreateOrder(
+                                name: userData.name,
+                                apartment: userData.apartment,
+                                bagsQuantity: _bagsQuantity.toInt(),
+                                price: bagPrices.threeBagsCost.toInt(),
+                                freeBags: freeBags,
+                              );
+                            }
+                        );
+                      }
+                      );
+                      print('four');
+                    },
                 ),
                 ChooseBagItem(
                   price: bagPrices.fourBagsCost,
@@ -172,13 +209,18 @@ class _ChooseBagsContentState extends State<ChooseBagsContent> {
                     context: context,
                     builder: (context) {
                       return ChooseBagMoreSheet(
+                        freeBags: freeBags,
+                        name: userData.name,
+                        apartment: userData.apartment,
+                        bagsQuantity: _bagsQuantity.toInt(),
+                        price: bagPrices.fourBagsCost.toInt() + bagPrices.additionalBagCost.toInt(),
                         onChanged: (newValue) {
                           setState(() {
                             _bagsQuantity = newValue;
                           });
                         },
-                        fourBagsPrice: bagPrices!.fourBagsCost,
-                        additionalBagPrice: bagPrices!.additionalBagCost,
+                        fourBagsPrice: bagPrices!.fourBagsCost.toInt(),
+                        additionalBagPrice: bagPrices!.additionalBagCost.toInt(),
                       );
                     },
                   );
