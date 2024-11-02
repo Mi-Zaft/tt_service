@@ -48,7 +48,7 @@ class OrderDetailsHistoryScreen extends StatelessWidget {
                     Image.asset('assets/images/iconGeo.png'),
                     const SizedBox(width: 10),
                     Text(
-                      'addressName кв. apartmentNam',
+                      '${order.address} кв. ${order.apartment}',
                       style: const TextStyle(
                         fontFamily: 'GT-Eesti-Pro-Display',
                         fontSize: 20,
@@ -65,7 +65,7 @@ class OrderDetailsHistoryScreen extends StatelessWidget {
                     Image.asset('assets/images/iconBag.png'),
                     const SizedBox(width: 10),
                     Text(
-                      'quantity мешков - ₽',
+                      '${order.quantity} мешков - ${order.price}₽',
                       style: const TextStyle(
                         fontFamily: 'GT-Eesti-Pro-Display',
                         fontSize: 20,

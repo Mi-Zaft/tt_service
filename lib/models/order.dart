@@ -3,17 +3,21 @@ class Order {
   final int quantity;
   final int price;
   final String status;
-  final String? comment;
-  final String? courierId;
+  final String comment;
+  final String courierId;
   final String userId;
+  final String address;
+  final String apartment;
 
   Order({
     required this.createdAt,
     required this.quantity,
     required this.price,
     required this.status,
-    this.comment,
-    this.courierId,
+    required this.address,
+    required this.apartment,
+    required this.comment,
+    required this.courierId,
     required this.userId,
   });
 
@@ -26,6 +30,8 @@ class Order {
       comment: json['comment'],
       courierId: json['courier_id'],
       userId: json['user_id'] ?? '',
+      address: json['address'] ?? '',
+      apartment: json['apartment'] ?? ''
     );
   }
 }

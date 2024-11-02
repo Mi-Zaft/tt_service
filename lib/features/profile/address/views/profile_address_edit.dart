@@ -97,8 +97,6 @@ class _ProfileAddressEditState extends State<ProfileAddressEdit> {
             userDataProvider.setUserData(userData);
             print('Проверка на Null UserData в BlocListener = ${userData.name}');
 
-            // Навигация на следующий экран
-            Navigator.pushNamed(context, '/bags-count-screen');
           }
         },
         child: Scaffold(
@@ -121,8 +119,15 @@ class _ProfileAddressEditState extends State<ProfileAddressEdit> {
                             foregroundColor: Colors.white,
                             elevation: 5.0,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             profileAddressBloc.add(ProfileAddressRequestSave());
+                            await fetchBagPrices(forceRefresh: false);
+                            Navigator.pushNamedAndRemoveUntil(
+                              context, // ЭТО ВАЖНО МОЖЕТ БЫТЬ, ЧЕК ДЛЯ ДЕБАГА
+                              '/bags-count-screen',
+                                  (route) => false,
+                            );
+
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
@@ -141,12 +146,12 @@ class _ProfileAddressEditState extends State<ProfileAddressEdit> {
                             elevation: 5.0,
                           ),
                           onPressed: () async {
-                            await fetchBagPrices(forceRefresh: false);
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/bags-count-screen',
-                                  (route) => false,
-                            );
+                            //await fetchBagPrices(forceRefresh: false);
+                            //Navigator.pushNamedAndRemoveUntil(
+                            //  context,
+                            //  '/bags-count-screen',
+                            //      (route) => false,
+                            //);
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
@@ -161,7 +166,7 @@ class _ProfileAddressEditState extends State<ProfileAddressEdit> {
             ),
           ),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+              FloatingActionButtonLocation.centerFloat,
           // resizeToAvoidBottomInset: false,
           body: SafeArea(
             child: Column(
