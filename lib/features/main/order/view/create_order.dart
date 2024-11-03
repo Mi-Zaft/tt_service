@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tt_service/services/api_service.dart';
 import 'package:tt_service/models/order.dart';
 import 'package:tt_service/features/main/order/view/order_detail_screen.dart';
+import 'package:tt_service/services/date_reformater.dart';
 
 
 class CreateOrder extends StatefulWidget {
@@ -159,8 +160,8 @@ class _CreateOrderState extends State<CreateOrder> {
                         // Берём последний заказ
                         Order latestOrder = orders.first;
 
-                        // Преобразуем дату
-                        final String formattedDate = formatTimestamp(latestOrder.createdAt);
+                        // Преобразовываем дату
+                        String ServiceTimeStamp = serviceFormatTimestamp(latestOrder.createdAt);
 
 
                         // Используем родительский контекст для открытия новой модалки
@@ -180,7 +181,7 @@ class _CreateOrderState extends State<CreateOrder> {
                                 quantity: latestOrder.quantity.toInt(),
                                 price: latestOrder.price.toInt(),
                                 status: latestOrder.status.toString(),
-                                createdAt: formattedDate.toString(),
+                                createdAt: ServiceTimeStamp,
                               );
                             },
                           );

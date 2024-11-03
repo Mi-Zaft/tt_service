@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt_service/services/date_reformater.dart';
 
 import '../../../../models/order.dart';
 
@@ -28,7 +29,7 @@ class OrderDetailsHistoryScreen extends StatelessWidget {
         children: [
           SizedBox(height: 50),
           Text(
-            "${formatTimestamp(order.createdAt)}",
+            "${serviceFormatTimestamp(order.createdAt)}",
             style: TextStyle(
               color: Color(0xFF505050),
               fontFamily: 'GT-Eesti-Pro-Display',

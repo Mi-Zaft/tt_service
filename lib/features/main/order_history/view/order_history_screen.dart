@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tt_service/models/order.dart';
 import 'package:tt_service/services/api_service.dart';
 import 'package:tt_service/features/main/order_history/view/order_details_history_screen.dart';
+import 'package:tt_service/services/date_reformater.dart';
 
 
 class OrderHistoryScreen extends StatefulWidget {
@@ -35,60 +36,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
       // Сортируем заказы по дате создания (от новых к старым)
       orders.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+
       return orders;
     } catch (e) {
       throw Exception('Ошибка при загрузке заказов: $e');
     }
   }
 
-  // Метод для форматирования даты
-  String formatTimestamp(int timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    String monthName;
 
-    switch (date.month) {
-      case 1:
-        monthName = 'Января';
-        break;
-      case 2:
-        monthName = 'Февраля';
-        break;
-      case 3:
-        monthName = 'Марта';
-        break;
-      case 4:
-        monthName = 'Апреля';
-        break;
-      case 5:
-        monthName = 'Мая';
-        break;
-      case 6:
-        monthName = 'Июня';
-        break;
-      case 7:
-        monthName = 'Июля';
-        break;
-      case 8:
-        monthName = 'Августа';
-        break;
-      case 9:
-        monthName = 'Сентября';
-        break;
-      case 10:
-        monthName = 'Октября';
-        break;
-      case 11:
-        monthName = 'Ноября';
-        break;
-      case 12:
-        monthName = 'Декабря';
-        break;
-      default:
-        monthName = '${date.month}'; // На случай непредвиденных значений
-    }
-
-    return '${date.day} $monthName ${date.year}г. ${date.hour}:${date.minute}';
-  }
 
 
   // Метод для определения цвета кнопки по статусу
@@ -154,11 +109,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 Order order = orders[index];
-                String formattedDate = formatTimestamp(order.createdAt);
+                String formattedDate = serviceFormatTimestamp(order.createdAt); // форматирование даты
                 Color buttonColor = getStatusColor(order.status);
-
-
-
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(35, 16, 35, 8),
                   child: InkWell(
