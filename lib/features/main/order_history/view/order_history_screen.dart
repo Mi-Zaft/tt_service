@@ -113,24 +113,24 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 Color buttonColor = getStatusColor(order.status);
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(35, 16, 35, 8),
-                  child: InkWell(
-                    onTap: () {
-                      showOrderDetails(order);
-                    },
-                    child: AspectRatio(
-                      aspectRatio: 19 / 3,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: buttonColor,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 15,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
+                  child: AspectRatio(
+                    aspectRatio: 19 / 3,
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 15,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          showOrderDetails(order);
+                        },
                         child: Center(
                             child: Text(formattedDate,
                               textAlign: TextAlign.center,
