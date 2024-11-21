@@ -27,7 +27,7 @@ class CheckAuthScreen extends StatelessWidget {
             } else {
               if (snapshot.data?['address'] == null) {
                 globalPhoneNumber = snapshot.data?['phone'];
-                return ProfileAddressEdit();
+                return const ProfileAddressEdit();
               }
               if (snapshot.data?['address'] != null) {
                 globalPhoneNumber = snapshot.data?['phone'];
