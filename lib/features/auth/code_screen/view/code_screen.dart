@@ -26,7 +26,11 @@ class _CodeScreen extends State<CodeScreen> {
   late List<FocusNode> focusNodes;
 
   void _handleBoxPressed() {
-    _focus.requestFocus();
+    FocusScope.of(context).requestFocus(_focus);
+    Future.delayed(const Duration(milliseconds: 100), () {
+      SystemChannels.textInput.invokeMethod('TextInput.show');
+    });
+    print("Tapped on box, focus requested");
   }
 
   void _controllerListener() {
@@ -116,7 +120,9 @@ class _CodeScreen extends State<CodeScreen> {
                     ),
                   ],
                 ),
-                Offstage(
+                Visibility(
+                  visible: false, // Поле будет скрыто, но интерактивно
+                  maintainState: true,
                   child: TextField(
                     focusNode: _focus,
                     controller: _codeTextFieldController,

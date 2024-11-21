@@ -13,7 +13,7 @@ class ChooseBagHowItWorkButton extends StatelessWidget {
           topRight: Radius.circular(25),
         ),
       ),
-      height: 300,
+      height: 350,
       width: MediaQuery.sizeOf(context).width,
       child: Column(
         children: [
@@ -33,6 +33,18 @@ class ChooseBagHowItWorkButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               'После оформления заказа выставите мешки за дверь. Курьер заберет их в течении 15 минут.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'GT-Eesti-Pro-Display',
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              'Мешок должен быть не более \n 90 литров и не более 7кг.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'GT-Eesti-Pro-Display',

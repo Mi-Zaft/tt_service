@@ -9,6 +9,7 @@ import 'package:tt_service/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:tt_service/models/user_data_provider.dart';
 import 'package:tt_service/models/user_data.dart';
+import 'package:tt_service/features/profile/profile_editor/overview.dart';
 
 String? globalPhoneNumber;
 
@@ -26,7 +27,7 @@ class CheckAuthScreen extends StatelessWidget {
             } else {
               if (snapshot.data?['address'] == null) {
                 globalPhoneNumber = snapshot.data?['phone'];
-                return const ProfileAddressEdit();
+                return ProfileAddressEdit();
               }
               if (snapshot.data?['address'] != null) {
                 globalPhoneNumber = snapshot.data?['phone'];

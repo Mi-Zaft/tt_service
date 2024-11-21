@@ -5,6 +5,7 @@ import 'package:tt_service/features/profile/address/widgets/address_comment_text
 import 'package:tt_service/features/profile/address/widgets/address_textfield.dart';
 import 'package:tt_service/features/main/get_prices/get_prices.dart';
 import 'package:tt_service/features/profile/my_profile_screen/widgets/phone_number_field.dart';
+import 'package:tt_service/features/profile/profile_editor/overview.dart';
 import 'package:tt_service/models/address.dart';
 import 'package:tt_service/models/user_data_provider.dart';
 import 'package:tt_service/models/user_data.dart';
@@ -18,6 +19,7 @@ class ProfileAddressEdit extends StatefulWidget {
 
   @override
   _ProfileAddressEditState createState() => _ProfileAddressEditState();
+
 
 }
 class _ProfileAddressEditState extends State<ProfileAddressEdit> {
@@ -146,12 +148,12 @@ class _ProfileAddressEditState extends State<ProfileAddressEdit> {
                             elevation: 5.0,
                           ),
                           onPressed: () async {
-                            //await fetchBagPrices(forceRefresh: false);
-                            //Navigator.pushNamedAndRemoveUntil(
-                            //  context,
-                            //  '/bags-count-screen',
-                            //      (route) => false,
-                            //);
+                            await fetchBagPrices(forceRefresh: false);
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/bags-count-screen',
+                                  (route) => false,
+                            );
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
